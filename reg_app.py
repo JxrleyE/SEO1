@@ -1,7 +1,8 @@
 from flask import Flask, render_template
 import os
 from dotenv import load_dotenv
-from register import register_bp
+from home_page import home_bp
+from database import db
 
 # load environment variable from .env
 load_dotenv()
@@ -17,7 +18,12 @@ def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = SECRET_KEY
 
-    app.register_blueprint(register_bp)
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+
+    # Initialize database
+    db.init_app(app)
+
+    app.register_blueprint(home_bp)
     
     return app
     
