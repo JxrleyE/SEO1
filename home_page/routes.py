@@ -1,8 +1,7 @@
 from flask import request
 from . import home_bp
 from flask import Flask, render_template, url_for
-from database import db
-
+from models import User
 
 @home_bp.route('/')
 def home():
