@@ -18,7 +18,7 @@ def create_app():
 
     # local import for simplicity and readability
     from sms_messaging import sms_bp
-    
+
     # test route
     @app.route('/')
     def home():
