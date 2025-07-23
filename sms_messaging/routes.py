@@ -8,6 +8,7 @@ def test_message():
     services.send_confirmation_message()
     return "<h1>Testing sending message!</h1>"
 
+
 @sms_bp.route('test')
 def test():
     return "<h1>SMS Blueprint Route Works!</h1>"

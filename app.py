@@ -1,4 +1,6 @@
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 import os
 from dotenv import load_dotenv
 
@@ -7,6 +9,12 @@ load_dotenv()
 
 # .env variables
 SECRET_KEY = os.environ.get("SECRET_KEY")
+SQLALCHEMY_DATABASE_URI = os.environ.get("SQLALCHEMY_DATABASE_URI")
+
+
+# global variables
+db = SQLAlchemy()
+migrate = Migrate()
 
 
 def create_app():
@@ -16,13 +24,21 @@ def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = SECRET_KEY
 
+
+    # connect with database and to migrate information
+    db.init_app(app)
+    migrate.init_app(app, db)
+
+
     # local import for simplicity and readability
     from sms_messaging import sms_bp
+
 
     # test route
     @app.route('/')
     def home():
         return "<h1>Testing!</h1>"
+
 
     # register blueprint for /sms route
     app.register_blueprint(sms_bp)

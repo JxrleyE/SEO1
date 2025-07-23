@@ -1,3 +1,4 @@
 .env
 venv/
 .codio
+__pycache__
