@@ -1,16 +1,14 @@
-from flask import Flask, render_template
+from flask import Flask
 import os
 from dotenv import load_dotenv
 from home_page import home_bp
 from extend_db import db
-from models import User
 
 # load environment variable from .env
 load_dotenv()
 
 # .env variables
 SECRET_KEY = os.environ.get("SECRET_KEY")
-
 
 def create_app():
     '''
