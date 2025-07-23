@@ -2,7 +2,8 @@ from flask import Flask
 import os
 from dotenv import load_dotenv
 from home_page import home_bp
-from extend_db import db
+from extensions import db, login_manager
+from extend_bcrypt import bcrypt
 
 # load environment variable from .env
 load_dotenv()
@@ -11,15 +12,24 @@ load_dotenv()
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 def create_app():
-    '''
-    Creates entryway that serves all content
-    '''
+    # Create Flask app
     app = Flask(__name__)
     app.config['SECRET_KEY'] = SECRET_KEY
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 
     # Initialize database
     db.init_app(app)
+
+    login_manager.init_app(app)
+    login_manager.login_view = 'home.login'  # Set the login view for Flask-Login
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(int(user_id))
+
+    
+    # Initialize bcrypt 
+    bcrypt.init_app(app)
 
     app.register_blueprint(home_bp)
     
