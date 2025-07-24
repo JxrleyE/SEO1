@@ -7,4 +7,3 @@ home_bp = Blueprint('home', __name__)
 
 # Importing routes so that they register with the blueprint
 from . import routes
-

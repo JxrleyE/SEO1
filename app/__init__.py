@@ -9,13 +9,14 @@ from .models import User
 # Load environment variables from .env
 load_dotenv()
 
-# Get secret key from environment variables 
+# Get secret key from environment variables
 SECRET_KEY = os.environ.get("SECRET_KEY")
+
 
 def create_app():
     # Create Flask app
     app = Flask(__name__)
-    
+
     app.config['SECRET_KEY'] = SECRET_KEY
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 
@@ -23,7 +24,7 @@ def create_app():
     db.init_app(app)
 
     login_manager.init_app(app)
-    login_manager.login_view = 'home.login' 
+    login_manager.login_view = 'home.login'
 
     # Loads user for Flask-Login
     @login_manager.user_loader
@@ -35,5 +36,5 @@ def create_app():
 
     # Register blueprint for home page routes
     app.register_blueprint(home_bp)
-    
+
     return app
