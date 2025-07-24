@@ -19,7 +19,7 @@ PERSONAL_NUMBER = os.environ.get("PERSONAL_NUMBER")
 client = Client(ACCOUNT_SID, AUTH_TOKEN)
 
 
-def send_confirmation_message():
+def send_confirmation_message(phone_number, registration_time, duration):
     '''
     Notifies user through sms about registration for a queue.
 
@@ -33,7 +33,7 @@ def send_confirmation_message():
     '''
     try:
         message = client.messages.create(
-            body="This is a test for confirming registration!",
+            body=f"You have registered to shower at {registration_time} with a duration of {duration} minutes!",
             from_=TWILIO_PHONE_NUMBER,
             to=PERSONAL_NUMBER,
         )

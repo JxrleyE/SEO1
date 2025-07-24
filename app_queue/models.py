@@ -1,12 +1,12 @@
-from extensions import db
+from app.extensions import db
 
 
 class QueueEntry(db.Model):
     '''
     Information about QueueEntry for Queue db
     '''
-    id = db.Column(db.Integer, primary_key=True)
-    phone_number = db.Column(db.String(20), nullable=False, index=True)
-    registration_time = db.Column(db.DateTime, nullable=False)
+    phone_number = db.Column(db.String(20), primary_key=True, index=True)
+    registration_time = db.Column(db.String(20), nullable=False)
+    duration = db.Column(db.Integer, nullable=False)
     position = db.Column(db.Integer, nullable=False)
 

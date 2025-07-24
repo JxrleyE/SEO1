@@ -3,7 +3,7 @@ from app_queue.models import QueueEntry
 from sqlalchemy import func, asc
 
 
-def add_to_queue(phone_number: str, registration_time: str):
+def add_to_queue(phone_number: str, registration_time: str, duration: int):
     '''
     Adds user to queue db with position and id
     '''
@@ -13,12 +13,12 @@ def add_to_queue(phone_number: str, registration_time: str):
 
     
     new_queue_entry = QueueEntry(
-                                id=form.username.data,
                                 phone_number=phone_number,
                                 registration_time=registration_time,
+                                duration=duration,
                                 position=new_position
                                 )
 
-        # Save to db
-        db.session.add(new_queue_entry)
-        db.session.commit()
+    # Save to db
+    db.session.add(new_queue_entry)
+    db.session.commit()
