@@ -2,39 +2,54 @@
 from flask import Flask
 import os
 from dotenv import load_dotenv
-from .home_page import home_bp
-from .extensions import db, login_manager, bcrypt
+from .extensions import db, login_manager, bcrypt, migrate
 from .models import User
+
 
 # Load environment variables from .env
 load_dotenv()
 
-# Get secret key from environment variables
+
+# Get .env variables
 SECRET_KEY = os.environ.get("SECRET_KEY")
+SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URI", "sqlite:///database.db")
 
 
 def create_app():
-    # Create Flask app
+    '''
+    Create Flask app
+    '''
     app = Flask(__name__)
 
     app.config['SECRET_KEY'] = SECRET_KEY
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URI", "sqlite:///database.db")
+    app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
 
-    # Initialize database
+
+    # Initialize entensions
     db.init_app(app)
-
     login_manager.init_app(app)
     login_manager.login_view = 'home.login'
+    migrate.init_app(app, db)
+
 
     # Loads user for Flask-Login
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(int(user_id))
 
+
     # Initialize password hashing extension
     bcrypt.init_app(app)
 
+
     # Register blueprint for home page routes
+    from .home_page import home_bp
     app.register_blueprint(home_bp)
+
+
+    # Register blueprint for /sms route
+    from sms_messaging import sms_bp
+    app.register_blueprint(sms_bp)
+
 
     return app

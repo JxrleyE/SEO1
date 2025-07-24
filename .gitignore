@@ -1,5 +1,6 @@
 .env
 venv/
+.codio
+__pycache__
 instance/
 *.db
-__pycache__/
