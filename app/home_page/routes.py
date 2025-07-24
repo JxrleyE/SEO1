@@ -54,7 +54,7 @@ def register():
         # Redirect to login page
         return redirect(url_for('home.login'))
 
-    # Show registration page if failed up form
+    # Show registration page if form validation fails
     return render_template('register.html', form=form)
 
 
