@@ -2,3 +2,5 @@
 venv/
 .codio
 __pycache__
+instance/
+*.db
