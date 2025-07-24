@@ -3,8 +3,8 @@
 from . import home_bp
 from flask import render_template, url_for, redirect
 from flask_login import login_user, login_required, logout_user
-from models import User, LoginForm, RegistrationForm
-from extensions import db, bcrypt
+from app.models import User, LoginForm, RegistrationForm
+from app.extensions import db, bcrypt
 
 @home_bp.route('/')
 def home():
