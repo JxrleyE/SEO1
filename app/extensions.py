@@ -1,5 +1,5 @@
 # This file is for importing and initializing Flask extensions
-# These extensions will are used db management,
+# These extensions are used for db management,
 # user authentication, and password hashing
 
 from flask_sqlalchemy import SQLAlchemy
