@@ -1,6 +1,6 @@
 # This file is responsible for creating and managing the User model and forms for 
 # registration/login
-from app.extensions import db
+from .extensions import db
 from flask_login import UserMixin
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
