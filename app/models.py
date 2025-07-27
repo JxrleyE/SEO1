@@ -55,4 +55,9 @@ class SchoolSelectionForm(FlaskForm):
         choices=[('University 1', 'University 1')],
         validators=[InputRequired()]
     )
+    dorm = SelectField(
+        'Select your dorm',
+        choices=[('Dorm 1', 'Dorm 1'), ('Dorm 2', 'Dorm 2')],
+        validators=[InputRequired()]
+    )
     submit = SubmitField('Continue')
