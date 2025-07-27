@@ -27,7 +27,7 @@ def login():
             login_user(user)
             
             # Check if user has chosen a school
-            if current_user.school:
+            if current_user.school and current_user.dorm:
                 return redirect(url_for('home.dashboard'))
             else:
                 return redirect(url_for('home.select_school'))
@@ -71,6 +71,7 @@ def select_school():
     # If submitted form is valid, add school to users db 
     if form.validate_on_submit():
         current_user.school = form.school.data
+        current_user.dorm = form.dorm.data
         db.session.commit()
         return redirect(url_for('home.dashboard'))
 
