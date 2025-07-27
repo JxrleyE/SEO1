@@ -6,7 +6,7 @@
     <title>School Selection</title>
 </head>
 <body>
-    <h1>Select Your School</h1>
+    <h1> Complete your profile ! </h1>
 
     {% if form.errors %}
         <div style="color: red;">
@@ -23,7 +23,10 @@
     <form method="POST" action="">
         {{ form.hidden_tag() }}
         {{ form.school }}<br>
+        {{ form.dorm }}<br>  
         {{ form.submit }}<br>
     </form>
+
+    
 </body>
 </html>
