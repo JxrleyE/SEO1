@@ -14,6 +14,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(20), unique=True, nullable=False)
     password = db.Column(db.String(128), nullable=False)
     school = db.Column(db.String(100), nullable= True)
+    dorm = db.Column(db.String(100), nullable=True)
 
 
 # Form for user registration with validation
