@@ -2,8 +2,8 @@
 
 from . import home_bp
 from flask import render_template, url_for, redirect
-from flask_login import login_user, login_required, logout_user
-from app.models import User, LoginForm, RegistrationForm
+from flask_login import login_user, login_required, logout_user, current_user
+from app.models import User, LoginForm, RegistrationForm, SchoolSelectionForm
 from app.extensions import db, bcrypt
 
 
@@ -25,7 +25,12 @@ def login():
         if user and bcrypt.check_password_hash(user.password,
                                                form.password.data):
             login_user(user)
-            return redirect(url_for('home.dashboard'))
+            
+            # Check if user has chosen a school
+            if current_user.school:
+                return redirect(url_for('home.dashboard'))
+            else:
+                return redirect(url_for('home.select_school'))
         else:
             # Show error msg for wrong username or password
             return render_template('login.html', form=form,
@@ -57,12 +62,24 @@ def register():
     # Show registration page if form validation fails
     return render_template('register.html', form=form)
 
+# School selection route - users select their school
+@home_bp.route('/select-school', methods=['GET', 'POST'])
+@login_required
+def select_school():
+    form = SchoolSelectionForm()
+
+    # If submitted form is valid, add school to users db 
+    if form.validate_on_submit():
+        current_user.school = form.school.data
+        db.session.commit()
+        return redirect(url_for('home.dashboard'))
+
+    return render_template('select_school.html', form=form)  
 
 # Dashboard route - requires user to be logged in
 @home_bp.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
-    """Protected dashboard route - requires authentication"""
     return render_template('dashboard.html')
 
 
