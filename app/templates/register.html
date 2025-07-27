@@ -6,24 +6,27 @@
     <title>Register</title>
 </head>
 <body>
-    <h1> Register Page</h1>
+    <h1>Register Page</h1>
 
     {% if form.errors %}
-        <div style="color: red; margin: 10px 0; padding: 10px; border: 1px solid red; background-color: #ffe6e6;">
-            {% for field, errors in form.errors.items() %}
-                {% for error in errors %}
-                    <div>{{ error }}</div>
+        <div style="color: red;">
+            <ul>
+                {% for field, errors in form.errors.items() %}
+                    {% for error in errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
                 {% endfor %}
-            {% endfor %}
+            </ul>
         </div>
     {% endif %}
 
-    <form method ="POST" action="">
+    <form method="POST" action="">
         {{ form.hidden_tag() }}
         {{ form.username }}
         {{ form.password }}
         {{ form.submit }}
     </form>
-     <a href="{{ url_for('home.login') }}">Already have account? Login!</a><br>
+    
+    <a href="{{ url_for('home.login') }}">Already have an account? Login!</a><br>
 </body>
 </html>
