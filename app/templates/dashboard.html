@@ -6,7 +6,10 @@
     <title>Dashboard</title>
 </head>
 <body>
-    <h1>You are logged in!</h1>
+    <div>
+        <p><strong>Selected School:</strong> {{ current_user.school }}</p>
+        <p><strong>Selected Dorm:</strong> {{ current_user.dorm }}</p>
+    </div>
     <a href="{{ url_for('home.logout') }}">Logout</a><br>
 </body>
 </html>
