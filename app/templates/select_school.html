@@ -22,8 +22,11 @@
 
     <form method="POST" action="">
         {{ form.hidden_tag() }}
+
+        <label for="school">Select School:</label><br>
         {{ form.school }}<br>
-        {{ form.dorm }}<br>  
+        <label for="dorm">Select Dorm:</label><br>
+        {{ form.dorm }}<br>
         {{ form.submit }}<br>
     </form>
 
