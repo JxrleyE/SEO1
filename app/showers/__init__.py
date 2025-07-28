@@ -1,4 +1,4 @@
-# This file is the blueprint initialization for home page routes
+# This file is the blueprint initialization for the shower routes
 
 from flask import Blueprint
 
