@@ -1,9 +1,11 @@
 # This file is for running the Flask application
 from flask import Flask
+from flask_apscheduler import APScheduler
 import os
 from dotenv import load_dotenv
 from .extensions import db, login_manager, bcrypt, migrate
 from .models import User
+from sms_messaging.services import send_reminder_message, send_appointment_message
 
 
 # Load environment variables from .env
@@ -12,7 +14,7 @@ load_dotenv()
 
 # Get .env variables
 SECRET_KEY = os.environ.get("SECRET_KEY")
-SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URI", "sqlite:///database.db")
+SQLALCHEMY_DATABASE_URI = os.environ.get("SQLALCHEMY_DATABASE_URI")
 
 
 def create_app():
@@ -21,8 +23,10 @@ def create_app():
     '''
     app = Flask(__name__)
 
+    # App configurations
     app.config['SECRET_KEY'] = SECRET_KEY
     app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
+    app.config['SCHEDULER_API_ENABLED'] = True
 
 
     # Initialize entensions
@@ -31,6 +35,14 @@ def create_app():
     login_manager.login_view = 'home.login'
     migrate.init_app(app, db)
 
+    
+    # Initialize scheduler
+    scheduler = APScheduler()
+    scheduler.init_app(app)
+    scheduler.start()
+
+    scheduler.add_job(id='send_reminders', func=send_reminder_message, trigger='interval', minutes=1, args=[app])
+    # scheduler.add_job(id='send_appointments', func=send_appointment_message, trigger='interval', seconds=30, args=[app])
 
     # Loads user for Flask-Login
     @login_manager.user_loader
