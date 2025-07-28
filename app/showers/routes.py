@@ -15,5 +15,5 @@ def shower_schedule(shower_id):
 
 @shower_bp.route('/showers/<int:shower_id>/book', methods=['POST'])
 def book_shower(shower_id):
-    
-# Gonna implement booking logic here
+    # Gonna implement booking logic here
+    pass
