@@ -6,10 +6,27 @@
     <title>Dashboard</title>
 </head>
 <body>
+   
     <div>
-        <p><strong>Selected School:</strong> {{ current_user.school }}</p>
-        <p><strong>Selected Dorm:</strong> {{ current_user.dorm }}</p>
+        <h2> Profile: {{ current_user.school }} | {{ current_user.dorm }}</h2>
     </div>
+
+    <div>
+        <h3> SHOWER QUEUE</h3>
+        <p>Current Status: <strong>0/4 showers available</strong></p>
+        <p>Next available: <strong>Shower 1 at 2:20 PM</strong></p>
+        <button>View All Showers</button>
+    </div>
+
+    <br>
+
+    <div>
+        <h3> LAUNDRY QUEUE</h3>
+        <p>Current Status: <strong>0/4 washers available</strong></p>
+        <p>Next available: <strong>Washer 1 at 2:00 PM</strong></p>
+        <button disabled>View All Washers </button>
+    </div>
+
     <a href="{{ url_for('home.logout') }}">Logout</a><br>
 </body>
 </html>
