@@ -1,6 +1,7 @@
 from flask import request, render_template, redirect, url_for
 from app_queue.services import add_to_queue
 import datetime
+import zoneinfo
 from . import sms_bp
 from . import forms
 from . import services
@@ -39,9 +40,17 @@ def test():
                 hour, minute, 0
             )
 
-            add_to_queue(phone_number, event, registration_time, duration)
-            services.send_confirmation_message(phone_number, event, registration_time, duration)
-            return redirect(url_for('home.dashboard'))
+            # Local time zone
+            local_time_zone = datetime.datetime.now().astimezone().tzinfo
+
+            local_registration_time = registration_time.replace(tzinfo=local_time_zone)
+
+            # Convert to UTC
+            registration_time_utc = local_registration_time.astimezone(datetime.timezone.utc)
+
+            add_to_queue(phone_number, event, registration_time_utc, duration)
+            services.send_confirmation_message(phone_number, event, registration_time_utc, duration)
+            return redirect(url_for('sms.test'))
         except Exception as e:
             render_template("register_event.html", form=form, error=e)
             print(e)
