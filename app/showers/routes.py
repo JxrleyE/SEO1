@@ -1,6 +1,6 @@
 from . import shower_bp
 from flask import render_template, redirect, url_for, request
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 @shower_bp.route('/showers')
@@ -17,15 +17,21 @@ def shower_schedule(shower_id):
         return redirect(url_for('showers.shower_list'))
     
     # Need to make all the possible times for booking | displays in regular 12-hour format
+    early_morning = []
     morning = []
     afternoon = []
     evening = []
     for hour in range(24):
         for minute in [0, 30]:
              time_obj = datetime.strptime(f"{hour:02}:{minute:02}", "%H:%M")
-             time_str = time_obj.strftime("%I:%M %p")
-             
-             if hour < 12:
+             # This is so the time is fomatted like "1:00 pm - 1:30 AM"
+             start_time = time_obj.strftime("%I:%M %p")
+             end_time = (time_obj + timedelta(minutes=30)).strftime("%I:%M %p")
+             time_str = f"{start_time} - {end_time}"
+
+             if hour < 6:
+                 early_morning.append(time_str)
+             elif hour < 12:
                  morning.append(time_str)
              elif hour < 18:
                  afternoon.append(time_str)
@@ -33,8 +39,9 @@ def shower_schedule(shower_id):
                  evening.append(time_str)
 
     # Shows the details of a specific shower and pass in the time slots
-    return render_template('showers/shower_schedule.html', shower_id=shower_id, 
-                           morning=morning, afternoon=afternoon, evening=evening)
+    return render_template('showers/shower_schedule.html', shower_id=shower_id,
+                           early_morning=early_morning, morning=morning, afternoon=afternoon,
+                             evening=evening)
 
 @shower_bp.route('/showers/<int:shower_id>/book', methods=['POST'])
 def book_shower(shower_id):
