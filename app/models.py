@@ -45,3 +45,31 @@ class LoginForm(FlaskForm):
         render_kw={"placeholder": "Password"}
     )
     submit = SubmitField('Login')
+
+
+# Form for changing password with validation
+class ChangePasswordForm(FlaskForm):
+    current_password = PasswordField(
+        validators=[InputRequired(), Length(min=6, max=20)],
+        render_kw={"placeholder": "Current Password"}
+    )
+    new_password = PasswordField(
+        validators=[InputRequired(), Length(min=6, max=20)],
+        render_kw={"placeholder": "New Password"}
+    )
+    
+    submit = SubmitField('Change Password', name='submit_password')
+
+
+# Form for changing username with validation
+class ChangeUsernameForm(FlaskForm):
+    current_username = StringField(
+        validators=[InputRequired(), Length(min=1, max=20)],
+        render_kw={"placeholder": "Current Username"}
+    )
+    new_username = StringField(
+        validators=[InputRequired(), Length(min=1, max=20)],
+        render_kw={"placeholder": "New Username"}
+    )
+
+    submit = SubmitField('Change Username', name='submit_username')
