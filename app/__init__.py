@@ -42,7 +42,7 @@ def create_app():
     scheduler.start()
 
     scheduler.add_job(id='send_reminders', func=send_reminder_message, trigger='interval', minutes=1, args=[app])
-    # scheduler.add_job(id='send_appointments', func=send_appointment_message, trigger='interval', seconds=30, args=[app])
+    scheduler.add_job(id='send_appointments', func=send_appointment_message, trigger='interval', seconds=30, args=[app])
 
     # Loads user for Flask-Login
     @login_manager.user_loader
