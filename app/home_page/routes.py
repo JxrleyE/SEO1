@@ -1,9 +1,9 @@
 # This file is responsible for creating different routes for the home blueprint
 
 from . import home_bp
-from flask import render_template, url_for, redirect
+from flask import render_template, url_for, redirect, request, flash
 from flask_login import login_user, login_required, logout_user
-from app.models import User, LoginForm, RegistrationForm
+from app.models import User, LoginForm, RegistrationForm, ChangePasswordForm, ChangeUsernameForm
 from app.extensions import db, bcrypt
 
 
@@ -23,7 +23,7 @@ def login():
 
         # If user exists and password matches
         if user and bcrypt.check_password_hash(user.password,
-                                               form.password.data):
+                                              form.password.data):
             login_user(user)
             return redirect(url_for('home.dashboard'))
         else:
@@ -72,3 +72,58 @@ def dashboard():
 def logout():
     logout_user()
     return redirect(url_for('home.login'))
+
+
+# Settings route - requires user to be logged in
+@home_bp.route('/settings', methods=['GET', 'POST'])
+#@login_required
+def settings():
+    """
+    Allows user to change settings (username, password), saves to database
+    """
+    username_form = ChangeUsernameForm()
+    password_form = ChangePasswordForm()
+
+    # Check whether username or password has been changed
+    if username_form.validate_on_submit() and 'submit_username' in request.form:
+        # Check if current_username matches logged-in user's username
+        if username_form.current_username.data != current_user.username:
+            print("ERROR: Current username does not match.")
+            return render_template('settings.html', user=current_user,
+                            username_form=username_form, password_form=password_form,
+                            error='Incorrect Username, please try again.')
+        else:
+            # Check if new_username is already taken by another user
+            existing_user = User.query.filter_by(username=username_form.new_username.data).first()
+            if existing_user and existing_user.id != current_user.id:
+                print("ERROR: New username is already taken.")
+                render_template('settings.html', user=current_user,
+                            username_form=username_form, password_form=password_form,
+                            error='Username already taken. Please try again.')
+            else:
+                # Update username
+                current_user.username = username_form.new_username.data
+                db.session.commit()
+                print("SUCCESS: Username updated successfully.")
+                return redirect(url_for('home.settings'))
+
+
+    # Handle password change form submission
+    if password_form.validate_on_submit() and 'submit_password' in request.form:
+        # Check if current_password matches logged-in user's password
+        if not bcrypt.check_password_hash(current_user.password, password_form.current_password.data):
+            print("ERROR: Current password does not match.")
+            render_template('settings.html', user=current_user,
+                            username_form=username_form, password_form=password_form,
+                            error='Password does not match current password.')
+        else:
+            # Hash and update new password
+            hashed_new_password = bcrypt.generate_password_hash(password_form.new_password.data)
+            current_user.password = hashed_new_password
+            db.session.commit()
+            print("SUCCESS: Password updated successfully.")
+            return redirect(url_for('home.settings'))
+
+
+    return render_template('settings.html', user=current_user, 
+                            username_form=username_form, password_form=password_form)
