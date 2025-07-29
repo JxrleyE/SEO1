@@ -16,9 +16,8 @@ def home():
 @home_bp.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
-
     if form.validate_on_submit():
-        # Check if user exists in database
+
         user = User.query.filter_by(username=form.username.data).first()
 
         # If user exists and password matches
@@ -44,10 +43,10 @@ def login():
 @home_bp.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
-
+    
     if form.validate_on_submit():
         # Hash password before storing in db
-        hashed_password = bcrypt.generate_password_hash(form.password.data)
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
 
         # Create new user with hashed password
         new_user = User(username=form.username.data, password=hashed_password)
@@ -55,6 +54,8 @@ def register():
         # Save to db
         db.session.add(new_user)
         db.session.commit()
+
+        print("REGISTER PW: ", hashed_password)
 
         # Redirect to login page
         return redirect(url_for('home.login'))
