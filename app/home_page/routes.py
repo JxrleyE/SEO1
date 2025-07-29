@@ -137,7 +137,7 @@ def settings():
                             error='Password does not match current password.')
         else:
             # Hash and update new password
-            hashed_new_password = bcrypt.generate_password_hash(password_form.new_password.data)
+            hashed_new_password = bcrypt.generate_password_hash(password_form.new_password.data).decode('utf-8')
             current_user.password = hashed_new_password
             db.session.commit()
             print("SUCCESS: Password updated successfully.")
