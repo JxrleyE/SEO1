@@ -33,11 +33,9 @@ class EventRegistrationForm(FlaskForm):
         ],
         render_kw={"placeholder": "Duration: (minutes, max 60)"}
     )
+    event = SelectField(
+        'Shower/Laundry',
+        choices=['Shower', 'Laundry'],
+        validators=[InputRequired()]
+    )
     submit = SubmitField('Register')
-
-
-    # Check if the phone number already exists
-    def validate_phone_number(self, phone_number):
-        existing_phone_number = QueueEntry.query.filter_by(phone_number=phone_number.data)
-        if existing_phone_number:
-            raise ValidationError('Phone number already registered!')

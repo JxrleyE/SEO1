@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Home</title>
+</head>
+
+<body>
+    <h1>Welcome {{user.username}} </h1>
+
+    {% if error %}
+        <div style="color: red; margin: 10px 0; padding: 10px; border: 1px solid red; background-color: #ffe6e6;">
+            {{ error }}
+        </div>
+    {% endif %}
+
+    <form method ="POST" action="">
+        {{ username_form.hidden_tag()}}
+        {{ username_form.current_username }}
+        {{ username_form.new_username }}
+        {{ username_form.submit }}
+    </form>
+
+    <form method ="POST" action="">
+        {{ password_form.hidden_tag()}}
+        {{ password_form.current_password }}
+        {{ password_form.new_password }}
+        {{ password_form.submit }}
+    </form>
+
+</body>
+</html>
