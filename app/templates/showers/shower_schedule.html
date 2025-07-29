@@ -16,7 +16,7 @@
             <!-- REPLACE URLFOR WITH BOOKING LOGIC -->
             <form action="{{ url_for('showers.book_shower', shower_id=shower_id) }}" method="POST">
                 <input type="hidden" name="time_slot" value="{{ early_morning[i].db_value }}">
-                <button type="submit">Book {{ early_morning[i].display_value }}</button>
+                <button type="submit">Book {{ early_morning[i]}}</button>
             </form>
             {% endif %}
         </td>
@@ -26,7 +26,7 @@
             <!-- REPLACE URLFOR WITH BOOKING LOGIC -->
             <form action="{{ url_for('showers.book_shower', shower_id=shower_id) }}" method="POST">
                 <input type="hidden" name="time_slot" value="{{ morning[i].db_value }}">
-                <button type="submit">Book {{ morning[i].display_value }}</button>
+                <button type="submit">Book {{ morning[i] }}</button>
             </form>
             {% endif %}
         </td>
@@ -35,7 +35,7 @@
             <!-- REPLACE URLFOR WITH BOOKING LOGIC -->
             <form action="{{ url_for('showers.book_shower', shower_id=shower_id) }}" method="POST">
                 <input type="hidden" name="time_slot" value="{{ afternoon[i].db_value }}">
-                <button type="submit">Book {{ afternoon[i].display_value }}</button>
+                <button type="submit">Book {{ afternoon[i] }}</button>
             </form>
             {% endif %}
         </td>
@@ -44,7 +44,7 @@
             <!-- REPLACE URLFOR WITH BOOKING LOGIC -->
             <form action="{{ url_for('showers.book_shower', shower_id=shower_id) }}" method="POST">
                 <input type="hidden" name="time_slot" value="{{ evening[i].db_value }}">
-                <button type="submit">Book {{ evening[i].display_value }}</button>
+                <button type="submit">Book {{ evening[i]}}</button>
             </form>
             {% endif %}
         </td>

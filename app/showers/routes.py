@@ -20,7 +20,7 @@ def shower_schedule(shower_id):
         for minute in [0, 30]:
              time_obj = datetime.strptime(f"{hour:02}:{minute:02}", "%H:%M")
              
-             # We have to store the time differently for db vs display
+             # We have to store the time differently for db vs. display
 
              db_time = time_obj.time()  # Use military time for db
              
@@ -30,19 +30,19 @@ def shower_schedule(shower_id):
              
              # Dictionary to hold both formats
              time_slot = {
-                 # 'db_time': start_time_db,  # For storing in database
-                 'display_time': f"{start_time} - {end_time}"  # For showing user
+                 'db_time': db_time,  
+                 'display_time': f"{start_time} - {end_time}"  
              }
 
             # Times are determined by the hour
              if hour < 6:
-                 early_morning.append(time_slot)
+                 early_morning.append(time_slot['display_time'])
              elif hour < 12:
-                 morning.append(time_slot)
+                 morning.append(time_slot['display_time'])
              elif hour < 18:
-                 afternoon.append(time_slot)
+                 afternoon.append(time_slot['display_time'])
              else:
-                 evening.append(time_slot)
+                 evening.append(time_slot['display_time'])
 
     # Shows the details of a specific shower and pass in the time slots
     return render_template('showers/shower_schedule.html', shower_id=shower_id,
