@@ -1,4 +1,4 @@
-from . import shower_bp
+from . import shower_bp, forms
 from flask import render_template, redirect, url_for, request
 from datetime import datetime, timedelta
 
@@ -49,7 +49,49 @@ def shower_schedule(shower_id):
                            early_morning=early_morning, morning=morning, afternoon=afternoon,
                              evening=evening)
 
+
 @shower_bp.route('/showers/<int:shower_id>/book', methods=['POST'])
 def book_shower(shower_id):
     # Gonna implement booking logic here
-    pass
+    form = forms.EventRegistrationForm()
+
+    if form.validate_on_submit():
+        phone_number = form.phone_number.data
+        duration = form.duration.data
+        event = form.event.data
+
+        # Get registration time
+        hour = int(form.hour.data)
+        minute = int(form.minute.data)
+        am_pm = form.am_pm.data
+
+        # Adjust for DateTime 24 hour time
+        if am_pm == 'PM' and hour != 12:
+            hour += 12
+        elif am_pm == 'AM' and hour == 12:
+            hour = 0
+
+        try:
+            today = datetime.date.today()
+ 
+            registration_time = datetime.datetime(
+                today.year, today.month, today.day,
+                hour, minute, 0
+            )
+
+            # Local time zone
+            local_time_zone = datetime.datetime.now().astimezone().tzinfo
+
+            local_registration_time = registration_time.replace(tzinfo=local_time_zone)
+
+            # Convert to UTC
+            registration_time_utc = local_registration_time.astimezone(datetime.timezone.utc)
+
+            add_to_queue(phone_number, event, registration_time_utc, duration)
+            services.send_confirmation_message(phone_number, event, registration_time_utc, duration)
+            return redirect(url_for('sms.test'))
+        except Exception as e:
+            render_template("showers/register_event.html", form=form, error=e)
+            print(e)
+
+    return render_template("showers/register_event.html", form=form)
