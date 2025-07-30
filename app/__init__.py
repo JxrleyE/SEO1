@@ -1,5 +1,5 @@
 # This file is for running the Flask application
-from flask import Flask
+from flask import Flask, session
 from flask_apscheduler import APScheduler
 import os
 from dotenv import load_dotenv
