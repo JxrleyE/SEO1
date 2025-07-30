@@ -6,4 +6,4 @@ from flask import Blueprint
 shower_bp = Blueprint('showers', __name__)
 
 # Importing routes so that they register with the blueprint
-from . import routes
+from . import routes, forms
