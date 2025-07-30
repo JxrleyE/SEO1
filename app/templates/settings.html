@@ -28,6 +28,8 @@
         {{ password_form.new_password }}
         {{ password_form.submit }}
     </form>
-
+    
+    <a href="{{ url_for('home.dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('home.logout') }}">Logout</a><br>
 </body>
 </html>
