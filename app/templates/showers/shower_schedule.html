@@ -14,7 +14,7 @@
     <tr>
                 <td>{% if early_morning[i] is defined %}
             <!-- REPLACE URLFOR WITH BOOKING LOGIC -->
-            <form action="{{ url_for('showers.book_shower', shower_id=shower_id) }}" method="POST">
+            <form action="{{ url_for('sms.test', shower_id=shower_id) }}" method="POST">
                 <input type="hidden" name="time_slot" value="{{ early_morning[i].db_value }}">
                 <button type="submit">Book {{ early_morning[i]}}</button>
             </form>
