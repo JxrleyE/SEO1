@@ -12,39 +12,44 @@
     <table>
     {% for i in range(12) %}
     <tr>
-                <td>{% if early_morning[i] is defined %}
-            <!-- REPLACE URLFOR WITH BOOKING LOGIC -->
+        <td>
+            {% if i < early_morning|length %}
+            {% set slot = early_morning[i] %}
             <form action="{{ url_for('showers.book_shower', shower_id=shower_id) }}" method="POST">
-                <input type="hidden" name="time_slot" value="{{ early_morning[i].db_value }}">
-                <button type="submit">Book {{ early_morning[i]}}</button>
+                <input type="hidden" name="time_slot" value="{{ slot.db_value }}">
+                <input type="hidden" name="time_slot_display" value="{{ slot.display_value }}">
+                <button type="submit">Book {{ slot.display_value }}</button>
             </form>
             {% endif %}
         </td>
 
         <td>
-            {% if morning[i] is defined %}
-            <!-- REPLACE URLFOR WITH BOOKING LOGIC -->
+            {% if i < morning|length %}
+            {% set slot = morning[i] %}
             <form action="{{ url_for('showers.book_shower', shower_id=shower_id) }}" method="POST">
-                <input type="hidden" name="time_slot" value="{{ morning[i].db_value }}">
-                <button type="submit">Book {{ morning[i] }}</button>
+                <input type="hidden" name="time_slot" value="{{ slot.db_value }}">
+                <input type="hidden" name="time_slot_display" value="{{ slot.display_value }}">
+                <button type="submit">Book {{ slot.display_value }}</button>
             </form>
             {% endif %}
         </td>
         <td>
-            {% if afternoon[i] is defined %}
-            <!-- REPLACE URLFOR WITH BOOKING LOGIC -->
+            {% if i < afternoon|length %}
+            {% set slot = afternoon[i] %}
             <form action="{{ url_for('showers.book_shower', shower_id=shower_id) }}" method="POST">
-                <input type="hidden" name="time_slot" value="{{ afternoon[i].db_value }}">
-                <button type="submit">Book {{ afternoon[i] }}</button>
+                <input type="hidden" name="time_slot" value="{{ slot.db_value }}">
+                <input type="hidden" name="time_slot_display" value="{{ slot.display_value }}">
+                <button type="submit">Book {{ slot.display_value }}</button>
             </form>
             {% endif %}
         </td>
         <td>
-            {% if evening[i] is defined %}
-            <!-- REPLACE URLFOR WITH BOOKING LOGIC -->
+            {% if i < evening|length %}
+            {% set slot = evening[i] %}
             <form action="{{ url_for('showers.book_shower', shower_id=shower_id) }}" method="POST">
-                <input type="hidden" name="time_slot" value="{{ evening[i].db_value }}">
-                <button type="submit">Book {{ evening[i]}}</button>
+                <input type="hidden" name="time_slot" value="{{ slot.db_value }}">
+                <input type="hidden" name="time_slot_display" value="{{ slot.display_value }}">
+                <button type="submit">Book {{ slot.display_value }}</button>
             </form>
             {% endif %}
         </td>
