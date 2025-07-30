@@ -6,4 +6,4 @@ sms_bp = Blueprint('sms', __name__, url_prefix='/sms', template_folder='template
 
 
 # importing all .py files
-from . import forms, routes, services
+from . import services
