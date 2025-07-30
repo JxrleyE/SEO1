@@ -58,6 +58,9 @@ def create_app():
     from .home_page import home_bp
     app.register_blueprint(home_bp)
 
+    # Register blueprint for showers routes
+    from .showers import shower_bp
+    app.register_blueprint(shower_bp)
 
     # Register blueprint for /sms route
     from sms_messaging import sms_bp

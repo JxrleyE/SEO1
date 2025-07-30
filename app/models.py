@@ -3,7 +3,7 @@
 from .extensions import db
 from flask_login import UserMixin
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, SelectField
 from wtforms.validators import InputRequired, Length, ValidationError
 
 
@@ -13,6 +13,8 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
     password = db.Column(db.String(128), nullable=False)
+    school = db.Column(db.String(100), nullable= True)
+    dorm = db.Column(db.String(100), nullable=True)
 
 
 # Form for user registration with validation
@@ -46,6 +48,19 @@ class LoginForm(FlaskForm):
     )
     submit = SubmitField('Login')
 
+# Form for selecting a school
+class SchoolSelectionForm(FlaskForm):
+    school = SelectField(
+        'Select your school',
+        choices=[('University 1', 'University 1')],
+        validators=[InputRequired()]
+    )
+    dorm = SelectField(
+        'Select your dorm',
+        choices=[('Dorm 1', 'Dorm 1'), ('Dorm 2', 'Dorm 2')],
+        validators=[InputRequired()]
+    )
+    submit = SubmitField('Continue')
 
 # Form for changing password with validation
 class ChangePasswordForm(FlaskForm):
