@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Schedule</title>
+</head>
+<body>
+    <h2> Shower {{ shower_id }} Schedule </h2>
+    <p>Available times:</p>
+    
+    <table>
+    {% for i in range(12) %}
+    <tr>
+                <td>{% if early_morning[i] is defined %}
+            <!-- REPLACE URLFOR WITH BOOKING LOGIC -->
+            <form action="{{ url_for('sms.test', shower_id=shower_id) }}" method="POST">
+                <input type="hidden" name="time_slot" value="{{ early_morning[i].db_value }}">
+                <button type="submit">Book {{ early_morning[i]}}</button>
+            </form>
+            {% endif %}
+        </td>
+
+        <td>
+            {% if morning[i] is defined %}
+            <!-- REPLACE URLFOR WITH BOOKING LOGIC -->
+            <form action="{{ url_for('showers.book_shower', shower_id=shower_id) }}" method="POST">
+                <input type="hidden" name="time_slot" value="{{ morning[i].db_value }}">
+                <button type="submit">Book {{ morning[i] }}</button>
+            </form>
+            {% endif %}
+        </td>
+        <td>
+            {% if afternoon[i] is defined %}
+            <!-- REPLACE URLFOR WITH BOOKING LOGIC -->
+            <form action="{{ url_for('showers.book_shower', shower_id=shower_id) }}" method="POST">
+                <input type="hidden" name="time_slot" value="{{ afternoon[i].db_value }}">
+                <button type="submit">Book {{ afternoon[i] }}</button>
+            </form>
+            {% endif %}
+        </td>
+        <td>
+            {% if evening[i] is defined %}
+            <!-- REPLACE URLFOR WITH BOOKING LOGIC -->
+            <form action="{{ url_for('showers.book_shower', shower_id=shower_id) }}" method="POST">
+                <input type="hidden" name="time_slot" value="{{ evening[i].db_value }}">
+                <button type="submit">Book {{ evening[i]}}</button>
+            </form>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+    </table>
+  </body>
+</html>

@@ -2,8 +2,8 @@
 
 from . import home_bp
 from flask import render_template, url_for, redirect, request, flash
-from flask_login import login_user, login_required, logout_user
-from app.models import User, LoginForm, RegistrationForm, ChangePasswordForm, ChangeUsernameForm
+from flask_login import login_user, login_required, logout_user, current_user
+from app.models import User, LoginForm, RegistrationForm, RegistrationForm, ChangePasswordForm, ChangeUsernameForm, SchoolSelectionForm
 from app.extensions import db, bcrypt
 
 
@@ -16,16 +16,20 @@ def home():
 @home_bp.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
-
     if form.validate_on_submit():
-        # Check if user exists in database
+
         user = User.query.filter_by(username=form.username.data).first()
 
         # If user exists and password matches
         if user and bcrypt.check_password_hash(user.password,
                                               form.password.data):
             login_user(user)
-            return redirect(url_for('home.dashboard'))
+            
+            # Check if user has chosen a school
+            if current_user.school and current_user.dorm:
+                return redirect(url_for('home.dashboard'))
+            else:
+                return redirect(url_for('home.select_school'))
         else:
             # Show error msg for wrong username or password
             return render_template('login.html', form=form,
@@ -39,10 +43,10 @@ def login():
 @home_bp.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
-
+    
     if form.validate_on_submit():
         # Hash password before storing in db
-        hashed_password = bcrypt.generate_password_hash(form.password.data)
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
 
         # Create new user with hashed password
         new_user = User(username=form.username.data, password=hashed_password)
@@ -51,18 +55,33 @@ def register():
         db.session.add(new_user)
         db.session.commit()
 
+        print("REGISTER PW: ", hashed_password)
+
         # Redirect to login page
         return redirect(url_for('home.login'))
 
     # Show registration page if form validation fails
     return render_template('register.html', form=form)
 
+# School selection route - users select their school
+@home_bp.route('/select-school', methods=['GET', 'POST'])
+@login_required
+def select_school():
+    form = SchoolSelectionForm()
+
+    # If submitted form is valid, add school to users db 
+    if form.validate_on_submit():
+        current_user.school = form.school.data
+        current_user.dorm = form.dorm.data
+        db.session.commit()
+        return redirect(url_for('home.dashboard'))
+
+    return render_template('select_school.html', form=form)  
 
 # Dashboard route - requires user to be logged in
 @home_bp.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
-    """Protected dashboard route - requires authentication"""
     return render_template('dashboard.html')
 
 
@@ -119,6 +138,7 @@ def settings():
         else:
             # Hash and update new password
             hashed_new_password = bcrypt.generate_password_hash(password_form.new_password.data)
+            hashed_new_password = bcrypt.generate_password_hash(password_form.new_password.data).decode('utf-8')
             current_user.password = hashed_new_password
             db.session.commit()
             print("SUCCESS: Password updated successfully.")
