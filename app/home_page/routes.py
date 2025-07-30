@@ -63,6 +63,7 @@ def register():
     # Show registration page if form validation fails
     return render_template('register.html', form=form)
 
+
 # School selection route - users select their school
 @home_bp.route('/select-school', methods=['GET', 'POST'])
 @login_required
@@ -77,6 +78,7 @@ def select_school():
         return redirect(url_for('home.dashboard'))
 
     return render_template('select_school.html', form=form)  
+
 
 # Dashboard route - requires user to be logged in
 @home_bp.route('/dashboard', methods=['GET', 'POST'])
@@ -95,7 +97,7 @@ def logout():
 
 # Settings route - requires user to be logged in
 @home_bp.route('/settings', methods=['GET', 'POST'])
-#@login_required
+@login_required
 def settings():
     """
     Allows user to change settings (username, password), saves to database
