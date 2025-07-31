@@ -27,6 +27,7 @@
     <form method ="POST" action="{{ url_for('showers.book_shower', shower_id=shower_id) }}">
         {{ form.hidden_tag() }}
         {{ form.phone_number }}
+        {{ form.time_zone }}
         {{ form.submit }}
     </form>
 

@@ -90,8 +90,8 @@ def dashboard():
     # Getting current queue entries of user
     today = datetime.now().date()
     queue_entries = QueueEntry.query.filter(
-        QueueEntry.id == current_user.id,
-        QueueEntry.registration_time.like(f'{today}%')
+        QueueEntry.id == current_user.id # UNCOMMENTED removed comma, add back later
+        # UNCOMMENTED QueueEntry.registration_time.like(f'{today}%')
     ).all()
 
     return render_template('dashboard.html', queue_entries=queue_entries)

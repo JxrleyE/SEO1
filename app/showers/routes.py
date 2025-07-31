@@ -2,6 +2,8 @@ from . import shower_bp, forms
 from flask import render_template, redirect, url_for, request, flash, session
 from datetime import datetime, timedelta
 from app_queue.services import add_to_queue, shower_available
+from sms_messaging import services
+import pytz
 
 # Show the list of showers
 @shower_bp.route('/showers')
@@ -23,7 +25,7 @@ def shower_schedule(shower_id):
              
              # We have to store the time differently for db vs. display
 
-             db_time = time_obj.time()  # Use military time for db
+             db_time = time_obj.strftime("%H:%M")  # Use military time for db
              
              # Display time (1:00 PM - 1:30 PM)
              start_time = time_obj.strftime("%I:%M %p")
@@ -76,15 +78,25 @@ def book_shower(shower_id):
         time_slot = booking_data['time_slot']
         time_slot_display = booking_data['time_slot_display']
         phone_number = form.phone_number.data
+        time_zone = form.time_zone.data
         event = 'shower'
         duration = 30
 
+        # CONVERT TIME AND TIME ZONE TO MATCH UTC TIME
+        user_tz = pytz.timezone(time_zone)
+        today_in_user_tz = datetime.now(user_tz).date()
+        parsed_time = datetime.strptime(time_slot, "%H:%M").time()
+        naive_datetime = datetime.combine(today_in_user_tz, parsed_time)
+        localized_datetime = user_tz.localize(naive_datetime)
+        booking_time_utc = localized_datetime.astimezone(pytz.utc)
+        booking_time_utc = booking_time_utc.strftime("%H:%M:%S")
+
         # Place info into db
         try:
-            print("Calling adding to queue", phone_number, event, shower_id, time_slot, duration)
-            add_to_queue(phone_number, event, shower_id, time_slot, duration)
+            print("Calling adding to queue", phone_number, event, shower_id, booking_time_utc, duration)
+            add_to_queue(phone_number, event, shower_id, booking_time_utc, duration)
             print("Added to queue successfully!")
-            # services.send_confirmation_message(phone_number, event, registration_time_utc, duration)
+            services.send_confirmation_message(phone_number, event, booking_time_utc, duration)
             flash(f'You have successfully registered to {event} at {time_slot_display}!', 'success')
             return redirect(url_for('home.dashboard'))
         except Exception as e:
