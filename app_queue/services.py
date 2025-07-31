@@ -31,7 +31,7 @@ def add_to_queue(phone_number: str, event: str, shower_id: int, registration_tim
                                 duration=duration,
                                 position=new_position,
                                 shower_id=shower_id,
-                                id = current_user.id
+                                user_id = current_user.id
                                 )
 
     # # Save to db

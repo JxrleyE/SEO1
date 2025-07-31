@@ -1,8 +1,8 @@
-"""added user ID to queue entry model
+"""Added ID to queue entry
 
-Revision ID: 0feca9a83c45
+Revision ID: 1f5d7b18e692
 Revises: b8ec4a16aa24
-Create Date: 2025-07-31 02:23:02.644502
+Create Date: 2025-07-31 05:23:07.795821
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '0feca9a83c45'
+revision = '1f5d7b18e692'
 down_revision = 'b8ec4a16aa24'
 branch_labels = None
 depends_on = None
