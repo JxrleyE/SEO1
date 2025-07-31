@@ -28,7 +28,8 @@ def add_to_queue(phone_number: str, event: str, shower_id: str, registration_tim
                                 event_type=event,
                                 registration_time=registration_time,
                                 duration=duration,
-                                position=new_position
+                                position=new_position,
+                                shower_id=shower_id
                                 )
 
     # # Save to db
@@ -36,3 +37,17 @@ def add_to_queue(phone_number: str, event: str, shower_id: str, registration_tim
     db.session.commit()
     print(f'{phone_number} has registered to {event} at shower {shower_id} at time {registration_time} with duration {duration}.')
     print(new_queue_entry)
+
+ # Check if shower is available at a certain time
+def shower_available(shower_id, time_slot):
+
+    booking = QueueEntry.query.filter(
+        QueueEntry.shower_id == shower_id,
+        QueueEntry.registration_time == time_slot,
+        QueueEntry.event_type == 'shower'
+    ).first()
+
+    if booking:
+        return False
+    else:
+        return True

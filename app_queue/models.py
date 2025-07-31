@@ -16,6 +16,7 @@ class QueueEntry(db.Model):
     duration = db.Column(db.Integer, nullable=False)
     position = db.Column(db.Integer, nullable=False)
     last_reminder_time = db.Column(db.DateTime, nullable=True)
+    shower_id = db.Column(db.Integer, nullable=False)
 
 
      # Define constraints
