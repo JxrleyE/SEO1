@@ -2,6 +2,7 @@ from app import db
 from app_queue.models import QueueEntry
 from sqlalchemy import func, asc
 from datetime import datetime
+from flask_login import current_user
 
 
 def add_to_queue(phone_number: str, event: str, shower_id: int, registration_time: str, duration: int):
@@ -29,7 +30,8 @@ def add_to_queue(phone_number: str, event: str, shower_id: int, registration_tim
                                 registration_time=registration_time,
                                 duration=duration,
                                 position=new_position,
-                                shower_id=shower_id
+                                shower_id=shower_id,
+                                id = current_user.id
                                 )
 
     # # Save to db

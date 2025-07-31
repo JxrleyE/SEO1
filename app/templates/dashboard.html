@@ -23,6 +23,16 @@
     {% endwith %}
 
     <div>
+        {% if queue_entries %}
+            <h3> Your Queue Entries</h3>
+            <ul>
+                {% for entry in queue_entries %}
+                    <li>{{ entry.event_type }} - {{ entry.registration_time }} - {{ entry.duration }}</li>
+                {% endfor %}
+            </ul>
+    </div>
+
+    <div>
         <h3> SHOWER QUEUE</h3>
         <p>Current Status: <strong> # of showers available</strong></p>
         <p>Next available: <strong> shower # : time </strong></p>

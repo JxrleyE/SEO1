@@ -5,6 +5,8 @@ from flask import render_template, url_for, redirect, request, flash
 from flask_login import login_user, login_required, logout_user, current_user
 from app.models import User, LoginForm, RegistrationForm, RegistrationForm, ChangePasswordForm, ChangeUsernameForm, SchoolSelectionForm
 from app.extensions import db, bcrypt
+from app_queue.models import QueueEntry
+from datetime import datetime
 
 
 @home_bp.route('/')
@@ -84,7 +86,15 @@ def select_school():
 @home_bp.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
-    return render_template('dashboard.html')
+
+    # Getting current queue entries of user
+    today = datetime.now().date()
+    queue_entries = QueueEntry.query.filter(
+        QueueEntry.id == current_user.id,
+        QueueEntry.registration_time.like(f'{today}%')
+    ).all()
+
+    return render_template('dashboard.html', queue_entries=queue_entries)
 
 
 # Logout route - allows users to log out (need to be logged in)
