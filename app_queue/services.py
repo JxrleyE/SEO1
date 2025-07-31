@@ -57,3 +57,14 @@ def shower_available(shower_id, time_slot):
         return False
     else:
         return True
+
+# Find and cancels a users booking
+def cancel_booking(queue_id, user_id):
+    booking = QueueEntry.query.filter_by(id=queue_id, user_id=user_id).first()
+
+    if booking:
+        db.session.delete(booking)
+        db.session.commit()
+        return True
+    else:
+        return False
