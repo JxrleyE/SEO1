@@ -4,7 +4,7 @@ from sqlalchemy import func, asc
 from datetime import datetime
 
 
-def add_to_queue(phone_number: str, event: str, shower_id: str, registration_time: str, duration: int):
+def add_to_queue(phone_number: str, event: str, shower_id: int, registration_time: str, duration: int):
     '''
     Adds user to queue db with position and id
     '''
@@ -41,9 +41,13 @@ def add_to_queue(phone_number: str, event: str, shower_id: str, registration_tim
  # Check if shower is available at a certain time
 def shower_available(shower_id, time_slot):
 
+    # Convert time slot back into a datetime object
+    today = datetime.now().date()
+    converted_time = datetime.combine(today, time_slot)
+
     booking = QueueEntry.query.filter(
         QueueEntry.shower_id == shower_id,
-        QueueEntry.registration_time == time_slot,
+        QueueEntry.registration_time == converted_time,
         QueueEntry.event_type == 'shower'
     ).first()
 

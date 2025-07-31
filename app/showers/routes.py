@@ -1,7 +1,7 @@
 from . import shower_bp, forms
 from flask import render_template, redirect, url_for, request, flash, session
 from datetime import datetime, timedelta
-from app_queue.services import add_to_queue
+from app_queue.services import add_to_queue, shower_available
 
 # Show the list of showers
 @shower_bp.route('/showers')
@@ -32,7 +32,8 @@ def shower_schedule(shower_id):
              # Dictionary to hold both formats
              time_slot_dict = {
                  'db_value': db_time,  
-                 'display_value': f"{start_time} - {end_time}"  
+                 'display_value': f"{start_time} - {end_time}",  
+                 'available': shower_available(shower_id, db_time)
              }
 
             # Times are determined by the hour
@@ -54,7 +55,6 @@ def shower_schedule(shower_id):
 @shower_bp.route('/showers/<int:shower_id>/book', methods=['GET', 'POST'])
 def book_shower(shower_id):
     form = forms.EventRegistrationForm()
-
     if request.method == 'POST' and 'time_slot' in request.form:
         # Get time slot to put into db
         time_slot = request.form.get('time_slot')
@@ -81,12 +81,14 @@ def book_shower(shower_id):
 
         # Place info into db
         try:
+            print("Calling adding to queue", phone_number, event, shower_id, time_slot, duration)
             add_to_queue(phone_number, event, shower_id, time_slot, duration)
+            print("Added to queue successfully!")
             # services.send_confirmation_message(phone_number, event, registration_time_utc, duration)
             flash(f'You have successfully registered to {event} at {time_slot_display}!', 'success')
             return redirect(url_for('home.dashboard'))
         except Exception as e:
-            render_template("showers/register_event.html", form=form, error=e)
+            return render_template("showers/register_event.html", form=form, error=e, shower_id=shower_id)
             print(e)
 
-    return render_template("showers/register_event.html", form=form)
+    return render_template("showers/register_event.html", form=form, shower_id=shower_id)

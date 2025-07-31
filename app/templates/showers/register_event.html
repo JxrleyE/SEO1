@@ -18,7 +18,13 @@
         </div>
     {% endif %}
 
-    <form method ="POST" action="">
+    {% if error %}  <!-- Add this section -->
+    <div style="color: red; margin: 10px 0; padding: 10px; border: 1px solid red; background-color: #ffe6e6;">
+        {{ error }}
+    </div>
+    {% endif %}
+
+    <form method ="POST" action="{{ url_for('showers.book_shower', shower_id=shower_id) }}">
         {{ form.hidden_tag() }}
         {{ form.phone_number }}
         {{ form.submit }}
