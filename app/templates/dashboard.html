@@ -27,13 +27,13 @@
         <h3>Your Queue Entries</h3>
         <ul>
             {% for entry in queue_entries %}
-                <li>{{ entry.event_type }} - {{ entry.registration_time.strftime('%I:%M %p') }} - 
+            <li>{{ entry.event_type }} - {{ entry.registration_time.strftime('%I:%M %p') }} - 
                     {{ (entry.registration_time + timedelta(minutes=30)).strftime('%I:%M %p') }}
-                </li>
+                    <form action="{{ url_for('home.cancel_booking', booking_id=entry.id) }}" method="POST">
+                        <button type="submit">Cancel booking</button>
+                    </form>
+            </li>
             {% endfor %}
-            <a href="{{ url_for('showers.book_shower', shower_id=1) }}">
-                <button>Cancel booking</button>
-            </a>
         </ul>
     </div>
     {% endif %}
