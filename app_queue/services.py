@@ -5,7 +5,7 @@ from datetime import datetime
 from flask_login import current_user
 
 
-def add_to_queue(phone_number: str, event: str, shower_id: int, registration_time: str, duration: int):
+def add_to_queue(phone_number: str, event: str, shower_id: int, registration_time: str, duration: int, clicked_time):
     '''
     Adds user to queue db with position and id
     '''
@@ -30,6 +30,7 @@ def add_to_queue(phone_number: str, event: str, shower_id: int, registration_tim
                                 registration_time=registration_time,
                                 duration=duration,
                                 position=new_position,
+                                clicked_time=clicked_time,
                                 shower_id=shower_id,
                                 user_id = current_user.id
                                 )
@@ -44,14 +45,10 @@ def add_to_queue(phone_number: str, event: str, shower_id: int, registration_tim
  # Check if shower is available at a certain time
 def shower_available(shower_id, time_slot):
 
-    # Convert time slot back into a datetime object
-    today = datetime.now().date()
-    time_obj = datetime.strptime(time_slot, "%H:%M")
-    converted_time = datetime.combine(today, time_obj.time())
-
+   
     booking = QueueEntry.query.filter(
         QueueEntry.shower_id == shower_id,
-        QueueEntry.registration_time == converted_time,
+        QueueEntry.clicked_time == time_slot, 
         QueueEntry.event_type == 'shower'
     ).first()
 

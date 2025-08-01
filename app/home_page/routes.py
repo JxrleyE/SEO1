@@ -95,7 +95,7 @@ def dashboard():
         QueueEntry.registration_time >= today
     ).all()
 
-    return render_template('dashboard.html', queue_entries=queue_entries, timedelta=timedelta)
+    return render_template('dashboard.html', queue_entries=queue_entries, timedelta=timedelta, datetime=datetime)
 
 
 # Logout route - allows users to log out (need to be logged in)
