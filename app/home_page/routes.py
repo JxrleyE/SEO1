@@ -6,7 +6,8 @@ from flask_login import login_user, login_required, logout_user, current_user
 from app.models import User, LoginForm, RegistrationForm, RegistrationForm, ChangePasswordForm, ChangeUsernameForm, SchoolSelectionForm
 from app.extensions import db, bcrypt
 from app_queue.models import QueueEntry
-from datetime import datetime
+from app_queue.services import cancel_queue
+from datetime import datetime, timedelta
 
 
 @home_bp.route('/')
@@ -90,11 +91,11 @@ def dashboard():
     # Getting current queue entries of user
     today = datetime.now().date()
     queue_entries = QueueEntry.query.filter(
-        QueueEntry.id == current_user.id # UNCOMMENTED removed comma, add back later
-        # UNCOMMENTED QueueEntry.registration_time.like(f'{today}%')
+        QueueEntry.user_id == current_user.id,
+        QueueEntry.registration_time >= today
     ).all()
 
-    return render_template('dashboard.html', queue_entries=queue_entries)
+    return render_template('dashboard.html', queue_entries=queue_entries, timedelta=timedelta)
 
 
 # Logout route - allows users to log out (need to be logged in)
@@ -159,3 +160,15 @@ def settings():
 
     return render_template('settings.html', user=current_user, 
                             username_form=username_form, password_form=password_form)
+
+ # Cancel Booking route - lets a user cancel thier booking through the dashboard
+@home_bp.route('/cancel-booking/<int:booking_id>', methods=['POST'])
+@login_required
+def cancel_booking(booking_id):
+    # If user has booking then cancel 
+    if cancel_queue(booking_id, current_user.id):
+        flash('Your booking has been cancelled successfully.', 'success')
+    else:
+        flash('Unable to cancel booking.', 'error')
+    
+    return redirect(url_for('home.dashboard'))

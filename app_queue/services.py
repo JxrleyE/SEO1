@@ -30,31 +30,41 @@ def add_to_queue(phone_number: str, event: str, shower_id: int, registration_tim
                                 registration_time=registration_time,
                                 duration=duration,
                                 position=new_position,
-                                # UNCOMMENTED shower_id=shower_id,
-                                # UNCOMMENTED id = current_user.id
+                                shower_id=shower_id,
+                                user_id = current_user.id
                                 )
 
-    # Save to db
-    # db.session.add(new_queue_entry)
-    # db.session.commit()
+    # # Save to db
+    db.session.add(new_queue_entry)
+    db.session.commit()
     print(f'{phone_number} has registered to {event} at shower {shower_id} at time {registration_time} with duration {duration}.')
     print(new_queue_entry)
 
-
-# UNCOMMENTED Check if shower is available at a certain time
+ # Check if shower is available at a certain time
 def shower_available(shower_id, time_slot):
-    return True
-#     # Convert time slot back into a datetime object
-#     today = datetime.now().date()
-#     converted_time = datetime.combine(today, time_slot)
 
-#     booking = QueueEntry.query.filter(
-#         QueueEntry.shower_id == shower_id,
-#         QueueEntry.registration_time == converted_time,
-#         QueueEntry.event_type == 'shower'
-#     ).first()
+    # Convert time slot back into a datetime object
+    today = datetime.now().date()
+    converted_time = datetime.combine(today, time_slot)
 
-#     if booking:
-#         return False
-#     else:
-#         return True
+    booking = QueueEntry.query.filter(
+        QueueEntry.shower_id == shower_id,
+        QueueEntry.registration_time == converted_time,
+        QueueEntry.event_type == 'shower'
+    ).first()
+
+    if booking:
+        return False
+    else:
+        return True
+
+# Find and cancels a users booking
+def cancel_queue(queue_id, user_id):
+    booking = QueueEntry.query.filter_by(id=queue_id, user_id=user_id).first()
+
+    if booking:
+        db.session.delete(booking)
+        db.session.commit()
+        return True
+    else:
+        return False
