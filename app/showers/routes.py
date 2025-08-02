@@ -96,7 +96,7 @@ def book_shower(shower_id):
             print("Calling adding to queue", phone_number, event, shower_id, booking_time_utc, duration)
             add_to_queue(phone_number, event, shower_id, booking_time_utc, duration, time_slot)
             print("Added to queue successfully!")
-            services.send_confirmation_message(phone_number, event, booking_time_utc, duration)
+            services.send_confirmation_message(phone_number, event, time_slot_display, duration)
             flash(f'You have successfully registered to {event} at {time_slot_display}!', 'success')
             return redirect(url_for('home.dashboard'))
         except Exception as e:

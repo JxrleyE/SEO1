@@ -34,11 +34,11 @@ def send_confirmation_message(phone_number, event, registration_time, duration):
         message = "You have registered to {event} at {registration_time} with a duration of {duration} minutes!"
     '''
     try:
-        # message = client.messages.create(
-        #     body=f"You have registered to {event} at {registration_time} with a duration of {duration} minutes!",
-        #     from_=TWILIO_PHONE_NUMBER,
-        #     to=PERSONAL_NUMBER,
-        # )
+        message = client.messages.create(
+            body=f"Hello! You have registered to {event} at {registration_time}!",
+            from_=TWILIO_PHONE_NUMBER,
+            to=PERSONAL_NUMBER,
+        )
 
         print(f"Successful sending registration message to {phone_number} with {event} at {registration_time} with duration {duration}!")
         return True
