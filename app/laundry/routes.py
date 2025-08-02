@@ -1,7 +1,7 @@
 from . import laundry_bp
 from flask import render_template, redirect, url_for, request, flash, session
 from datetime import datetime, timedelta
-from app_queue.services import add_to_queue, machine_available
+from app_queue.services import add_to_queue, dryer_available, washer_available
 from sms_messaging import services
 from app.showers import forms
 import pytz
@@ -35,7 +35,7 @@ def washer_schedule(washer_id):
              time_slot_dict = {
                  'db_value': db_time,  
                  'display_value': f"{start_time} - {end_time}",  
-                ## 'available': washer_available(washer_id, db_time)
+                 'available': washer_available(washer_id, db_time)
              }
 
             # Times are determined by the hour
@@ -77,7 +77,7 @@ def dryer_schedule(dryer_id):
              time_slot_dict = {
                  'db_value': db_time,  
                  'display_value': f"{start_time} - {end_time}",  
-                ## 'available': dryer_available(dryer, db_time)
+                 'available': dryer_available(dryer_id, db_time)
              }
 
             # Times are determined by the hour
