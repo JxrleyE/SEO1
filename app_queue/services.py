@@ -50,11 +50,13 @@ def add_to_queue(phone_number: str, event: str, shower_id: int,
 
 # Check if shower is available at a certain time
 def shower_available(shower_id, time_slot):
+    today = datetime.now().date()
 
     booking = QueueEntry.query.filter(
         QueueEntry.shower_id == shower_id,
         QueueEntry.clicked_time == time_slot,
-        QueueEntry.event_type == 'shower'
+        QueueEntry.event_type == 'shower',
+        func.date(QueueEntry.registration_time) == today
     ).first()
 
     if booking:
