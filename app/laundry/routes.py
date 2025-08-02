@@ -141,10 +141,10 @@ def book_washer(washer_id):
             flash(f'You have successfully registered to {event} at {time_slot_display}!', 'success')
             return redirect(url_for('home.dashboard'))
         except Exception as e:
-            return render_template("laundry/register_event.html", form=form, error=e, washer_id=washer_id)
+            return render_template("laundry/register_washer_event.html", form=form, error=e, washer_id=washer_id)
             print(e)
 
-    return render_template("laundry/register_event.html", form=form, washer_id=washer_id)
+    return render_template("laundry/register_washer_event.html", form=form, washer_id=washer_id)
 
 
 @laundry_bp.route('/dryer/<int:dryer_id>/book', methods=['GET', 'POST'])
@@ -196,4 +196,4 @@ def book_dryer(dryer_id):
             return render_template("laundry/register_event.html", form=form, error=e, dryer_id=dryer_id)
             print(e)
 
-    return render_template("laundry/register_event.html", form=form, dryer_id=dryer_id)
+    return render_template("laundry/register_dryer_event.html", form=form, dryer_id=dryer_id)

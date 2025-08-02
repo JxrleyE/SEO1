@@ -135,6 +135,8 @@ def settings():
                                    user=current_user,
                                    username_form=username_form,
                                    password_form=password_form,
+                                   change_school_form=change_school_form,
+                                   change_dorm_form=change_dorm_form,
                                    error='Incorrect username.')
         else:
             # Check if new_username is already taken by another user
@@ -146,6 +148,8 @@ def settings():
                                        user=current_user,
                                        username_form=username_form,
                                        password_form=password_form,
+                                       change_school_form=change_school_form,
+                                       change_dorm_form=change_dorm_form,
                                        error='Username already taken.')
             else:
                 # Update username
@@ -165,6 +169,8 @@ def settings():
                                    user=current_user,
                                    username_form=username_form,
                                    password_form=password_form,
+                                   change_school_form=change_school_form,
+                                   change_dorm_form=change_dorm_form,
                                    error='Incorrect password. Try again.')
         else:
             # Hash and update new password
@@ -192,7 +198,9 @@ def settings():
     return render_template('settings.html',
                            user=current_user,
                            username_form=username_form,
-                           password_form=password_form)
+                           password_form=password_form,
+                           change_school_form=change_school_form,
+                           change_dorm_form=change_dorm_form)
 
 
 # Cancel Booking route - lets a user cancel their booking through the dashboard
