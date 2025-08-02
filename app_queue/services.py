@@ -45,6 +45,7 @@ def shower_available(shower_id, time_slot):
 
     # Convert time slot back into a datetime object
     today = datetime.now().date()
+    time_slot = datetime.strptime(time_slot, "%H:%M").time()
     converted_time = datetime.combine(today, time_slot)
 
     booking = QueueEntry.query.filter(
