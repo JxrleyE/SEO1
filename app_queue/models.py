@@ -20,6 +20,8 @@ class QueueEntry(db.Model):
     position = db.Column(db.Integer, nullable=False)
     last_reminder_time = db.Column(db.DateTime, nullable=True)
     shower_id = db.Column(db.Integer, nullable=False)
+    washer_id = db.Column(db.Integer, nullable=False)
+    dryer_id = db.Column(db.Integer, nullable=False)
     user_id = db.Column(db.Integer, nullable=False)
     clicked_time = db.Column(db.String(5), nullable=False)
 
