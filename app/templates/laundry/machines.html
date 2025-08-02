@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Showers </title>
+</head>
+<body>
+    <h2> Select a washer: </h2>
+
+    <a href="{{ url_for('laundry.washer_schedule', washer_id=1) }}">
+        <h3> Shower 1 </h3>
+    </a>
+    <a href="{{ url_for('laundry.washer_schedule', washer_id=2) }}">
+        <h3> Shower 2 </h3>
+    </a>
+    <a href="{{ url_for('laundry.washer_schedule', washer_id=3) }}">
+        <h3> Shower 3 </h3>
+    </a>
+    <a href="{{ url_for('laundry.washer_schedule', washer_id=4) }}">
+        <h3> Shower 4 </h3>
+    </a>
+
+    <h2> Select a Dryer: </h2>
+
+    <a href="{{ url_for('laundry.dryer_schedule', dryer_id=1) }}">
+        <h3> Dryer 1 </h3>
+    </a>
+    <a href="{{ url_for('laundry.dryer_schedule', dryer_id=2) }}">
+        <h3> Shower 2 </h3>
+    </a>
+    <a href="{{ url_for('laundry.dryer_schedule', dryer_id=3) }}">
+        <h3> Shower 3 </h3>
+    </a>
+    <a href="{{ url_for('laundry.dryer_schedule', dryer_id=4) }}">
+        <h3> Shower 4 </h3>
+    </a>
+
+    <a href="{{ url_for('home.dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('home.logout') }}">Logout</a><br>
+</body>
+</html>

@@ -53,7 +53,9 @@
         <h3> LAUNDRY QUEUE</h3>
         <p>Current Status: <strong></strong></p>
         <p>Next available: <strong></strong></p>
-        <button disabled>View All Washers </button>
+        <a href="{{ url_for('laundry.laundry_list') }}">
+            <button>View All Washers</button>
+        </a>
     </div>
 
     <a href="{{ url_for('home.settings') }}">Settings</a>
