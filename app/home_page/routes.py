@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 from app_queue.services import cancel_queue
 from app.models import (
     User, LoginForm, RegistrationForm, ChangePasswordForm,
-    ChangeUsernameForm, SchoolSelectionForm
+    ChangeUsernameForm, SchoolSelectionForm, ChangeSchoolForm, ChangeDormForm
 )
 
 
@@ -122,6 +122,8 @@ def settings():
     """
     username_form = ChangeUsernameForm()
     password_form = ChangePasswordForm()
+    change_school_form = ChangeSchoolForm()
+    change_dorm_form = ChangeDormForm()
 
     # Check whether username or password has been changed
     if (username_form.validate_on_submit() and
@@ -172,6 +174,20 @@ def settings():
             db.session.commit()
             print("SUCCESS: Password updated successfully.")
             return redirect(url_for('home.settings'))
+    
+    # If user changes school
+    if (change_school_form.validate_on_submit() and
+            'submit_school' in request.form):
+        current_user.school = change_school_form.school.data
+        db.session.commit()
+        return redirect(url_for('home.settings'))
+    
+    # If user changes dorm
+    if (change_dorm_form.validate_on_submit() and
+            'submit_dorm' in request.form):
+        current_user.dorm = change_dorm_form.dorm.data
+        db.session.commit()
+        return redirect(url_for('home.settings'))
 
     return render_template('settings.html',
                            user=current_user,

@@ -90,3 +90,19 @@ class ChangeUsernameForm(FlaskForm):
     )
 
     submit = SubmitField('Change Username', name='submit_username')
+
+class ChangeSchoolForm(FlaskForm):
+    school = SelectField(
+        'Select your school',
+        choices=[('University 1', 'University 1')],
+        validators=[InputRequired()]
+    )
+    submit = SubmitField('Change School', name='submit_school')
+
+class ChangeDormForm(FlaskForm):
+    dorm = SelectField(
+        'Select your dorm',
+        choices=[('Dorm 1', 'Dorm 1'), ('Dorm 2', 'Dorm 2')],
+        validators=[InputRequired()]
+    )
+    submit = SubmitField('Change Dorm', name='submit_dorm')
