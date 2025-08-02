@@ -3,11 +3,14 @@
 from . import home_bp
 from flask import render_template, url_for, redirect, request, flash
 from flask_login import login_user, login_required, logout_user, current_user
-from app.models import User, LoginForm, RegistrationForm, RegistrationForm, ChangePasswordForm, ChangeUsernameForm, SchoolSelectionForm
 from app.extensions import db, bcrypt
 from app_queue.models import QueueEntry
-from app_queue.services import cancel_queue
 from datetime import datetime, timedelta
+from app_queue.services import cancel_queue
+from app.models import (
+    User, LoginForm, RegistrationForm, ChangePasswordForm,
+    ChangeUsernameForm, SchoolSelectionForm
+)
 
 
 @home_bp.route('/')
@@ -20,14 +23,13 @@ def home():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-
         user = User.query.filter_by(username=form.username.data).first()
 
         # If user exists and password matches
-        if user and bcrypt.check_password_hash(user.password,
-                                              form.password.data):
+        if user and bcrypt.check_password_hash(
+                user.password, form.password.data):
             login_user(user)
-            
+
             # Check if user has chosen a school
             if current_user.school and current_user.dorm:
                 return redirect(url_for('home.dashboard'))
@@ -46,10 +48,11 @@ def login():
 @home_bp.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
-    
+
     if form.validate_on_submit():
         # Hash password before storing in db
-        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        hashed_password = bcrypt.generate_password_hash(
+            form.password.data).decode('utf-8')
 
         # Create new user with hashed password
         new_user = User(username=form.username.data, password=hashed_password)
@@ -73,21 +76,20 @@ def register():
 def select_school():
     form = SchoolSelectionForm()
 
-    # If submitted form is valid, add school to users db 
+    # If submitted form is valid, add school to users db
     if form.validate_on_submit():
         current_user.school = form.school.data
         current_user.dorm = form.dorm.data
         db.session.commit()
         return redirect(url_for('home.dashboard'))
 
-    return render_template('select_school.html', form=form)  
+    return render_template('select_school.html', form=form)
 
 
 # Dashboard route - requires user to be logged in
 @home_bp.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
-
     # Getting current queue entries of user
     today = datetime.now().date()
     queue_entries = QueueEntry.query.filter(
@@ -95,7 +97,12 @@ def dashboard():
         QueueEntry.registration_time >= today
     ).all()
 
-    return render_template('dashboard.html', queue_entries=queue_entries, timedelta=timedelta)
+    return render_template(
+        'dashboard.html',
+        queue_entries=queue_entries,
+        timedelta=timedelta,
+        datetime=datetime
+    )
 
 
 # Logout route - allows users to log out (need to be logged in)
@@ -117,21 +124,27 @@ def settings():
     password_form = ChangePasswordForm()
 
     # Check whether username or password has been changed
-    if username_form.validate_on_submit() and 'submit_username' in request.form:
+    if (username_form.validate_on_submit() and
+            'submit_username' in request.form):
         # Check if current_username matches logged-in user's username
         if username_form.current_username.data != current_user.username:
             print("ERROR: Current username does not match.")
-            return render_template('settings.html', user=current_user,
-                            username_form=username_form, password_form=password_form,
-                            error='Incorrect Username, please try again.')
+            return render_template('settings.html',
+                                   user=current_user,
+                                   username_form=username_form,
+                                   password_form=password_form,
+                                   error='Incorrect username.')
         else:
             # Check if new_username is already taken by another user
-            existing_user = User.query.filter_by(username=username_form.new_username.data).first()
+            existing_user = User.query.filter_by(
+                username=username_form.new_username.data).first()
             if existing_user and existing_user.id != current_user.id:
                 print("ERROR: New username is already taken.")
-                render_template('settings.html', user=current_user,
-                            username_form=username_form, password_form=password_form,
-                            error='Username already taken. Please try again.')
+                return render_template('settings.html',
+                                       user=current_user,
+                                       username_form=username_form,
+                                       password_form=password_form,
+                                       error='Username already taken.')
             else:
                 # Update username
                 current_user.username = username_form.new_username.data
@@ -139,36 +152,41 @@ def settings():
                 print("SUCCESS: Username updated successfully.")
                 return redirect(url_for('home.settings'))
 
-
     # Handle password change form submission
-    if password_form.validate_on_submit() and 'submit_password' in request.form:
+    if (password_form.validate_on_submit() and
+            'submit_password' in request.form):
         # Check if current_password matches logged-in user's password
-        if not bcrypt.check_password_hash(current_user.password, password_form.current_password.data):
+        if not bcrypt.check_password_hash(
+                current_user.password, password_form.current_password.data):
             print("ERROR: Current password does not match.")
-            render_template('settings.html', user=current_user,
-                            username_form=username_form, password_form=password_form,
-                            error='Password does not match current password.')
+            return render_template('settings.html',
+                                   user=current_user,
+                                   username_form=username_form,
+                                   password_form=password_form,
+                                   error='Incorrect password. Try again.')
         else:
             # Hash and update new password
-            hashed_new_password = bcrypt.generate_password_hash(password_form.new_password.data)
-            hashed_new_password = bcrypt.generate_password_hash(password_form.new_password.data).decode('utf-8')
+            hashed_new_password = bcrypt.generate_password_hash(
+                password_form.new_password.data).decode('utf-8')
             current_user.password = hashed_new_password
             db.session.commit()
             print("SUCCESS: Password updated successfully.")
             return redirect(url_for('home.settings'))
 
+    return render_template('settings.html',
+                           user=current_user,
+                           username_form=username_form,
+                           password_form=password_form)
 
-    return render_template('settings.html', user=current_user, 
-                            username_form=username_form, password_form=password_form)
 
- # Cancel Booking route - lets a user cancel thier booking through the dashboard
+# Cancel Booking route - lets a user cancel their booking through the dashboard
 @home_bp.route('/cancel-booking/<int:booking_id>', methods=['POST'])
 @login_required
 def cancel_booking(booking_id):
-    # If user has booking then cancel 
+    # If user has booking then cancel
     if cancel_queue(booking_id, current_user.id):
         flash('Your booking has been cancelled successfully.', 'success')
     else:
         flash('Unable to cancel booking.', 'error')
-    
+
     return redirect(url_for('home.dashboard'))
