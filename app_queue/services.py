@@ -64,6 +64,36 @@ def shower_available(shower_id, time_slot):
     else:
         return True
 
+# Check if washer is available at a certain time
+def washer_available(washer_id, time_slot):
+    today = datetime.now().date()
+    booking = QueueEntry.query.filter(
+        QueueEntry.washer_id == washer_id,
+        QueueEntry.clicked_time == time_slot,
+        QueueEntry.event_type == 'washer',
+        func.date(QueueEntry.registration_time) == today
+    ).first()
+
+    if booking:
+        return False
+    else:
+        return True
+
+# Check if dryer is available at a certain time
+
+def dryer_available(dryer_id, time_slot):
+    today = datetime.now().date()
+    booking = QueueEntry.query.filter(
+        QueueEntry.dryer_id == dryer_id,
+        QueueEntry.clicked_time == time_slot,
+        QueueEntry.event_type == 'dryer',
+        func.date(QueueEntry.registration_time) == today
+    ).first()
+
+    if booking:
+        return False
+    else:
+        return True
 
 # Find and cancels a users booking
 def cancel_queue(queue_id, user_id):
