@@ -93,13 +93,18 @@ def cancel_queue(queue_id, user_id):
 
 # Gets how many shower/washer/dryer are currently at the moment
 def available_count(event_type):
-    current_time = datetime.now().strftime('%H:%M')
+    
     today = datetime.now().date()
 
-    # Get all bookings for the current time for a machine
+    # Creating a 30 minute time window to check for bookings
+    current_hour = datetime.now().hour
+    minute = 30 if datetime.now().minute > 30 else 0
+    current_time_slot = f"{current_hour}:{minute}"
+
+    # Get all bookings for the current 30 minute time window for a machine
     booked = QueueEntry.query.filter(
         QueueEntry.event_type == event_type,
-        QueueEntry.clicked_time == current_time,
+        QueueEntry.clicked_time == current_time_slot,
         func.date(QueueEntry.registration_time) == today
     ).all()
 
