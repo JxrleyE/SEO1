@@ -40,7 +40,7 @@
 
     <div>
         <h3> SHOWER QUEUE</h3>
-        <p>Current Status: <strong> # of showers available</strong></p>
+        <p>Current Status: <strong> {{ shower_count }} showers available</strong></p>
         <p>Next available: <strong> shower # : time </strong></p>
         <a href="{{ url_for('showers.shower_list') }}">
             <button>View All Showers</button>
@@ -51,8 +51,10 @@
 
     <div>
         <h3> LAUNDRY QUEUE</h3>
-        <p>Current Status: <strong></strong></p>
-        <p>Next available: <strong></strong></p>
+        <p>Current Status: <strong> {{ washer_count }} washers available : </strong>
+                           <strong>{{ dryer_count }} dryers available</strong>
+        </p>
+        <p>Next available: <strong> dryer # : time </strong></p>
         <a href="{{ url_for('laundry.laundry_list') }}">
             <button>View All Washers</button>
         </a>

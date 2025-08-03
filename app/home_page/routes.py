@@ -6,7 +6,7 @@ from flask_login import login_user, login_required, logout_user, current_user
 from app.extensions import db, bcrypt
 from app_queue.models import QueueEntry
 from datetime import datetime, timedelta
-from app_queue.services import cancel_queue
+from app_queue.services import cancel_queue, available_count
 from app.models import (
     User, LoginForm, RegistrationForm, ChangePasswordForm,
     ChangeUsernameForm, SchoolSelectionForm, ChangeSchoolForm, ChangeDormForm
@@ -90,6 +90,12 @@ def select_school():
 @home_bp.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
+
+    # Get how many showers/washers/dryers are available in given moment
+    shower_count = available_count('shower')
+    washer_count = available_count('washer')
+    dryer_count = available_count('dryer')
+
     # Getting current queue entries of user
     today = datetime.now().date()
     queue_entries = QueueEntry.query.filter(
@@ -101,7 +107,10 @@ def dashboard():
         'dashboard.html',
         queue_entries=queue_entries,
         timedelta=timedelta,
-        datetime=datetime
+        datetime=datetime,
+        shower_count=shower_count,
+        washer_count=washer_count,
+        dryer_count=dryer_count
     )
 
 

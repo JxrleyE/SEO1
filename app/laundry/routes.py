@@ -193,7 +193,7 @@ def book_dryer(dryer_id):
             flash(f'You have successfully registered to {event} at {time_slot_display}!', 'success')
             return redirect(url_for('home.dashboard'))
         except Exception as e:
-            return render_template("laundry/register_event.html", form=form, error=e, dryer_id=dryer_id)
+            return render_template("laundry/register_dryer_event.html", form=form, error=e, dryer_id=dryer_id)
             print(e)
 
     return render_template("laundry/register_dryer_event.html", form=form, dryer_id=dryer_id)
