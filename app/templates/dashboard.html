@@ -60,6 +60,21 @@
         </a>
     </div>
 
+    <div>
+        <h3>Upcoming Bookings</h3>
+        {% if upcoming_bookings %}
+        <ul>
+            {% for booking in upcoming_bookings %}
+            <li> 
+                {{ booking.event_type }} #{{ booking.shower_id }} - 
+                {{ datetime.strptime(booking.clicked_time, '%H:%M').strftime('%I:%M %p') }}
+            </li>
+            {% el}
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+
     <a href="{{ url_for('home.settings') }}">Settings</a>
     <a href="{{ url_for('home.logout') }}">Logout</a><br>
 </body>

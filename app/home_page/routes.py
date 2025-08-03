@@ -6,7 +6,7 @@ from flask_login import login_user, login_required, logout_user, current_user
 from app.extensions import db, bcrypt
 from app_queue.models import QueueEntry
 from datetime import datetime, timedelta
-from app_queue.services import cancel_queue, available_count
+from app_queue.services import cancel_queue, available_count, upcoming_bookings
 from app.models import (
     User, LoginForm, RegistrationForm, ChangePasswordForm,
     ChangeUsernameForm, SchoolSelectionForm, ChangeSchoolForm, ChangeDormForm
@@ -110,7 +110,8 @@ def dashboard():
         datetime=datetime,
         shower_count=shower_count,
         washer_count=washer_count,
-        dryer_count=dryer_count
+        dryer_count=dryer_count,
+        upcoming_bookings=upcoming_bookings()
     )
 
 
