@@ -61,17 +61,19 @@
     </div>
 
     <div>
-        <h3>Upcoming Bookings</h3>
+        <h3>Live Queue</h3>
         {% if upcoming_bookings %}
         <ul>
             {% for booking in upcoming_bookings %}
             <li> 
                 {{ booking.event_type }} #{{ booking.shower_id }} - 
                 {{ datetime.strptime(booking.clicked_time, '%H:%M').strftime('%I:%M %p') }}
+                {{ (datetime.strptime(booking.clicked_time, '%H:%M') + timedelta(minutes=30)).strftime('%I:%M %p') }}
             </li>
-            {% el}
             {% endfor %}
         </ul>
+        {% else %}
+        <p>No upcoming bookings at the moment</p>
         {% endif %}
     </div>
 
