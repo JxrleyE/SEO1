@@ -99,7 +99,7 @@ def available_count(event_type):
     # Creating a 30 minute time window to check for bookings
     current_hour = datetime.now().hour
     minute = 30 if datetime.now().minute > 30 else 0
-    current_time_slot = f"{current_hour}:{minute}"
+    current_time_slot = f"{current_hour:02d}:{minute:02d}"
 
     # Get all bookings for the current 30 minute time window for a machine
     booked = QueueEntry.query.filter(
