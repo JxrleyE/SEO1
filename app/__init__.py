@@ -1,5 +1,5 @@
 # This file is for running the Flask application
-from flask import Flask
+from flask import Flask, session
 from flask_apscheduler import APScheduler
 import os
 from dotenv import load_dotenv
@@ -65,6 +65,10 @@ def create_app():
     # Register blueprint for /sms route
     from sms_messaging import sms_bp
     app.register_blueprint(sms_bp)
+
+    # Register blueprint for laundry routes
+    from .laundry import laundry_bp
+    app.register_blueprint(laundry_bp)
 
 
     return app

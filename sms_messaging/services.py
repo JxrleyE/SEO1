@@ -23,22 +23,24 @@ def send_confirmation_message(phone_number, event, registration_time, duration):
     '''
     Notifies user through sms about registration for a queue.
 
-    Args (To be implemented):
-        phone_number (str): Number to receive confirmation message.
-        registration_time (str): Time of start of event.
+    Args:
+        phone_number: Number to receive confirmation message.
+        event: (shower, laundry)
+        registration_time: Time of start of event.
+        duration: duration
 
     Returns:
         bool: indication of success or failure.
-        message = "You have registered for {event (shower, laundry)} at {registration_time}."
+        message = "You have registered to {event} at {registration_time} with a duration of {duration} minutes!"
     '''
     try:
-        message = client.messages.create(
-            body=f"You have registered to {event} at {registration_time} with a duration of {duration} minutes!",
-            from_=TWILIO_PHONE_NUMBER,
-            to=PERSONAL_NUMBER,
-        )
+        # message = client.messages.create(
+        #     body=f"You have registered to {event} at {registration_time} with a duration of {duration} minutes!",
+        #     from_=TWILIO_PHONE_NUMBER,
+        #     to=PERSONAL_NUMBER,
+        # )
 
-        print(f"Successful sending registration message to {phone_number} with {event} at {registration_time}!")
+        print(f"Successful sending registration message to {phone_number} with {event} at {registration_time} with duration {duration}!")
         return True
     except Exception as e:
         print(f'Error occurred during confirmation message: {e}')

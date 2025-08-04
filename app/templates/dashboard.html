@@ -11,9 +11,36 @@
         <h2> Profile: {{ current_user.school }} | {{ current_user.dorm }}</h2>
     </div>
 
+     {# Display flashed messages #}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul class="flashes">
+                {% for category, message in messages %}
+                    <li class="flash-{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    {% if queue_entries %}
+    <div>
+        <h3>Your Queue Entries</h3>
+        <ul>
+            {% for entry in queue_entries %}
+            <li>{{ entry.event_type }} - {{ datetime.strptime(entry.clicked_time, '%H:%M').strftime('%I:%M %p') }} - 
+                {{ (datetime.strptime(entry.clicked_time, '%H:%M') + timedelta(minutes=30)).strftime('%I:%M %p') }}
+                    <form action="{{ url_for('home.cancel_booking', booking_id=entry.id) }}" method="POST">
+                        <button type="submit">Cancel booking</button>
+                    </form>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
     <div>
         <h3> SHOWER QUEUE</h3>
-        <p>Current Status: <strong> # of showers available</strong></p>
+        <p>Current Status: <strong> {{ shower_count }} showers available</strong></p>
         <p>Next available: <strong> shower # : time </strong></p>
         <a href="{{ url_for('showers.shower_list') }}">
             <button>View All Showers</button>
@@ -24,9 +51,30 @@
 
     <div>
         <h3> LAUNDRY QUEUE</h3>
-        <p>Current Status: <strong></strong></p>
-        <p>Next available: <strong></strong></p>
-        <button disabled>View All Washers </button>
+        <p>Current Status: <strong> {{ washer_count }} washers available : </strong>
+                           <strong>{{ dryer_count }} dryers available</strong>
+        </p>
+        <p>Next available: <strong> dryer # : time </strong></p>
+        <a href="{{ url_for('laundry.laundry_list') }}">
+            <button>View All Washers</button>
+        </a>
+    </div>
+
+    <div>
+        <h3>Live Queue</h3>
+        {% if upcoming_bookings %}
+        <ul>
+            {% for booking in upcoming_bookings %}
+            <li> 
+                {{ booking.event_type }} #{{ booking.shower_id }} - 
+                {{ datetime.strptime(booking.clicked_time, '%H:%M').strftime('%I:%M %p') }}
+                {{ (datetime.strptime(booking.clicked_time, '%H:%M') + timedelta(minutes=30)).strftime('%I:%M %p') }}
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No upcoming bookings at the moment</p>
+        {% endif %}
     </div>
 
     <a href="{{ url_for('home.settings') }}">Settings</a>

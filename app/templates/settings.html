@@ -29,5 +29,19 @@
         {{ password_form.submit }}
     </form>
 
+    <form method ="POST" action="">
+        {{ change_school_form.hidden_tag()}}
+        {{ change_school_form.school }}
+        {{ change_school_form.submit }}
+    </form>
+
+    <form method ="POST" action="">
+        {{ change_dorm_form.hidden_tag()}}
+        {{ change_dorm_form.dorm }}
+        {{ change_dorm_form.submit }}
+    </form>
+
+    <a href="{{ url_for('home.dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('home.logout') }}">Logout</a><br>
 </body>
 </html>
