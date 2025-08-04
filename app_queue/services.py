@@ -86,7 +86,7 @@ def machine_available(machine_id, time_slot, event_type):
     else:
         return True
 
-def cancel_booking(queue_id, user_id):
+def cancel_queue(queue_id, user_id):
 
     # Check if booking exists
     booking = QueueEntry.query.filter_by(
