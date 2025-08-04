@@ -1,3 +1,7 @@
+# This file is responsible for services involving the queue db, like adding to queue,
+# checking if a machine is available, cancelling a booking, and getting 
+# upcoming bookings
+
 from app import db
 from app_queue.models import QueueEntry
 from sqlalchemy import func, asc
@@ -48,10 +52,11 @@ def add_to_queue(phone_number: str, event: str, shower_id: int,
     print(new_queue_entry)
 
 
-# Check if shower is available at a certain time
 def shower_available(shower_id, time_slot):
+
     today = datetime.now().date()
 
+    # Check if shower is booked at a certain time
     booking = QueueEntry.query.filter(
         QueueEntry.shower_id == shower_id,
         QueueEntry.clicked_time == time_slot,
@@ -64,9 +69,11 @@ def shower_available(shower_id, time_slot):
     else:
         return True
 
-# Check if washer or dryer is available at a certain time
 def machine_available(machine_id, time_slot, event_type):
+
     today = datetime.now().date()
+
+    # Check if machine is booked at a certain time
     booking = QueueEntry.query.filter(
         QueueEntry.shower_id == machine_id,
         QueueEntry.clicked_time == time_slot,
@@ -79,8 +86,9 @@ def machine_available(machine_id, time_slot, event_type):
     else:
         return True
 
-# Find and cancels a users booking
-def cancel_queue(queue_id, user_id):
+def cancel_booking(queue_id, user_id):
+
+    # Check if booking exists
     booking = QueueEntry.query.filter_by(
         id=queue_id, user_id=user_id).first()
 
@@ -108,12 +116,10 @@ def available_count(event_type):
         func.date(QueueEntry.registration_time) == today
     ).all()
 
-    total_machines = 4 # theres 4 of each type
+    total_machines = 4 # since theres 4 of each type
 
-    # Subtract total available from current booked
     return total_machines - len(booked)
 
-# Gets upcoming bookings
 def upcoming_bookings():
      today = datetime.now().date()
 

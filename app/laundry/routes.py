@@ -1,3 +1,5 @@
+# This file is responsible for creating different routes for the laundry blueprint
+
 from . import laundry_bp
 from flask import render_template, redirect, url_for, request, flash, session
 from datetime import datetime, timedelta
@@ -6,7 +8,6 @@ from sms_messaging import services
 from app.showers import forms
 import pytz
 
-# Show the list of laundry machines
 @laundry_bp.route('/laundry')
 def laundry_list():
     return render_template('laundry/machines.html')
@@ -95,6 +96,7 @@ def dryer_schedule(dryer_id):
                            early_morning=early_morning, morning=morning, afternoon=afternoon,
                              evening=evening)
 
+# Book a specific washer
 @laundry_bp.route('/washer/<int:washer_id>/book', methods=['GET', 'POST'])
 def book_washer(washer_id):
     form = forms.EventRegistrationForm()
@@ -146,7 +148,7 @@ def book_washer(washer_id):
 
     return render_template("laundry/register_washer_event.html", form=form, washer_id=washer_id)
 
-
+# Book a specific dryer
 @laundry_bp.route('/dryer/<int:dryer_id>/book', methods=['GET', 'POST'])
 def book_dryer(dryer_id):
     form = forms.EventRegistrationForm()

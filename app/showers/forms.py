@@ -1,3 +1,6 @@
+# This file is responsible for creating the forms for the shower blueprint, 
+# like registering for a shower
+
 from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, SubmitField, IntegerField
 from wtforms.validators import InputRequired, Length, ValidationError, NumberRange
