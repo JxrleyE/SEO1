@@ -4,32 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>School Selection</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1> Complete your profile ! </h1>
+    <div class="login-container">
+        <h1>Complete your profile !</h1>
 
-    {% if form.errors %}
-        <div style="color: red;">
-            <ul>
-                {% for field, errors in form.errors.items() %}
-                    {% for error in errors %}
-                        <li>{{ error }}</li>
+        {# Error Message Styling #}
+        {% if form.errors %}
+            <div class="error-message">
+                <ul>
+                    {% for field, errors in form.errors.items() %}
+                        {% for error in errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
                     {% endfor %}
-                {% endfor %}
-            </ul>
-        </div>
-    {% endif %}
+                </ul>
+            </div>
+        {% endif %}
 
-    <form method="POST" action="">
-        {{ form.hidden_tag() }}
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
 
-        <label for="school">Select School:</label><br>
-        {{ form.school }}<br>
-        <label for="dorm">Select Dorm:</label><br>
-        {{ form.dorm }}<br>
-        {{ form.submit }}<br>
-    </form>
-
-    
+            <label for="school">Select School:</label><br>
+            {{ form.school(class="form-select") }}
+            <br>
+            <label for="dorm">Select Dorm:</label><br>
+            {{ form.dorm(class="form-select") }}
+            <br>
+            {{ form.submit }}<br>
+        </form>
+    </div>
 </body>
 </html>

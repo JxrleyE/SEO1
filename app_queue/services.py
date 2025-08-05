@@ -69,8 +69,12 @@ def cancel_queue(queue_id, user_id):
         id=queue_id, user_id=user_id).first()
 
     if booking:
+        phone_number = booking.phone_number
+        event = booking.event_type
+        time = booking.registration_time
+
         db.session.delete(booking)
         db.session.commit()
-        return True
+        return (True, [phone_number, event, time])
     else:
         return False

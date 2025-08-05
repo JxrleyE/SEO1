@@ -7,6 +7,7 @@ from app.extensions import db, bcrypt
 from app_queue.models import QueueEntry
 from datetime import datetime, timedelta
 from app_queue.services import cancel_queue
+from sms_messaging.services import send_cancellation_message
 from app.models import (
     User, LoginForm, RegistrationForm, ChangePasswordForm,
     ChangeUsernameForm, SchoolSelectionForm
@@ -184,8 +185,10 @@ def settings():
 @login_required
 def cancel_booking(booking_id):
     # If user has booking then cancel
-    if cancel_queue(booking_id, current_user.id):
+    cancellation = cancel_queue(booking_id, current_user.id)
+    if cancellation[0]:
         flash('Your booking has been cancelled successfully.', 'success')
+        send_cancellation_message(cancellation[1][0], cancellation[1][1], cancellation[1][2])
     else:
         flash('Unable to cancel booking.', 'error')
 

@@ -4,59 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-   
-    <div>
-        <h2> Profile: {{ current_user.school }} | {{ current_user.dorm }}</h2>
-    </div>
+    <div class="dashboard-container">
 
-     {# Display flashed messages #}
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <ul class="flashes">
-                {% for category, message in messages %}
-                    <li class="flash-{{ category }}">{{ message }}</li>
+        <h2 class="profile-header">{{ current_user.username }}: {{ current_user.school }} | {{ current_user.dorm }}</h2>
+
+        {# Display flashed messages #}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flashes">
+                    {% for category, message in messages %}
+                        <li class="flash-{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        {% if queue_entries %}
+        <div class="queue-section">
+            <h3>Your Queue Entries</h3>
+            <ul class="queue-list">
+                {% for entry in queue_entries %}
+                <li class="queue-item">
+                    <span>{{ entry.event_type }} - {{ datetime.strptime(entry.clicked_time, '%H:%M').strftime('%I:%M %p') }} -
+                    {{ (datetime.strptime(entry.clicked_time, '%H:%M') + timedelta(minutes=30)).strftime('%I:%M %p') }}</span>
+                    <form action="{{ url_for('home.cancel_booking', booking_id=entry.id) }}" method="POST">
+                        <button type="submit" class="cancel-button">Cancel booking</button>
+                    </form>
+                </li>
                 {% endfor %}
             </ul>
+        </div>
         {% endif %}
-    {% endwith %}
 
-    {% if queue_entries %}
-    <div>
-        <h3>Your Queue Entries</h3>
-        <ul>
-            {% for entry in queue_entries %}
-            <li>{{ entry.event_type }} - {{ datetime.strptime(entry.clicked_time, '%H:%M').strftime('%I:%M %p') }} - 
-                {{ (datetime.strptime(entry.clicked_time, '%H:%M') + timedelta(minutes=30)).strftime('%I:%M %p') }}
-                    <form action="{{ url_for('home.cancel_booking', booking_id=entry.id) }}" method="POST">
-                        <button type="submit">Cancel booking</button>
-                    </form>
-            </li>
-            {% endfor %}
-        </ul>
+        <div class="queue-section">
+            <h3>SHOWER QUEUE</h3>
+            <p>Current Status: <strong> # of showers available</strong></p>
+            <p>Next available: <strong> shower # : time </strong></p>
+            <a href="{{ url_for('showers.shower_list') }}" class="glass-button-link small-button">
+                View All Showers
+            </a>
+        </div>
+
+        <div class="queue-section">
+            <h3>LAUNDRY QUEUE</h3>
+            <p>Current Status: <strong></strong></p>
+            <p>Next available: <strong></strong></p>
+            <button disabled class="glass-button-link small-button disabled-button">View All Washers </button>
+        </div>
+
+        <div class="dashboard-links">
+            <a href="{{ url_for('home.settings') }}" class="glass-button-link">Settings</a>
+            <a href="{{ url_for('home.logout') }}" class="glass-button-link">Logout</a>
+        </div>
+
     </div>
-    {% endif %}
-
-    <div>
-        <h3> SHOWER QUEUE</h3>
-        <p>Current Status: <strong> # of showers available</strong></p>
-        <p>Next available: <strong> shower # : time </strong></p>
-        <a href="{{ url_for('showers.shower_list') }}">
-            <button>View All Showers</button>
-        </a>
-    </div>
-
-    <br>
-
-    <div>
-        <h3> LAUNDRY QUEUE</h3>
-        <p>Current Status: <strong></strong></p>
-        <p>Next available: <strong></strong></p>
-        <button disabled>View All Washers </button>
-    </div>
-
-    <a href="{{ url_for('home.settings') }}">Settings</a>
-    <a href="{{ url_for('home.logout') }}">Logout</a><br>
 </body>
 </html>
