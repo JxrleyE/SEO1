@@ -1,3 +1,7 @@
+# This file is responsible for services involving the queue db, like adding to queue,
+# checking if a machine is available, cancelling a booking, and getting 
+# upcoming bookings
+
 from app import db
 from app_queue.models import QueueEntry
 from sqlalchemy import func, asc
@@ -48,13 +52,16 @@ def add_to_queue(phone_number: str, event: str, shower_id: int,
     print(new_queue_entry)
 
 
-# Check if shower is available at a certain time
 def shower_available(shower_id, time_slot):
 
+    today = datetime.now().date()
+
+    # Check if shower is booked at a certain time
     booking = QueueEntry.query.filter(
         QueueEntry.shower_id == shower_id,
         QueueEntry.clicked_time == time_slot,
-        QueueEntry.event_type == 'shower'
+        QueueEntry.event_type == 'shower',
+        func.date(QueueEntry.registration_time) == today
     ).first()
 
     if booking:
@@ -62,9 +69,26 @@ def shower_available(shower_id, time_slot):
     else:
         return True
 
+def machine_available(machine_id, time_slot, event_type):
 
-# Find and cancels a users booking
+    today = datetime.now().date()
+
+    # Check if machine is booked at a certain time
+    booking = QueueEntry.query.filter(
+        QueueEntry.shower_id == machine_id,
+        QueueEntry.clicked_time == time_slot,
+        QueueEntry.event_type == event_type,
+        func.date(QueueEntry.registration_time) == today
+    ).first()
+
+    if booking:
+        return False
+    else:
+        return True
+
 def cancel_queue(queue_id, user_id):
+
+    # Check if booking exists
     booking = QueueEntry.query.filter_by(
         id=queue_id, user_id=user_id).first()
 
@@ -78,3 +102,40 @@ def cancel_queue(queue_id, user_id):
         return (True, [phone_number, event, time])
     else:
         return False
+
+# Gets how many shower/washer/dryer are currently at the moment
+def available_count(event_type):
+    
+    today = datetime.now().date()
+
+    # Creating a 30 minute time window to check for bookings
+    current_hour = datetime.now().hour
+    current_minute = 30 if datetime.now().minute > 30 else 0
+    current_time_slot = f"{current_hour:02d}:{current_minute:02d}"
+
+    # Get all bookings for the current 30 minute time window for a machine
+    booked = QueueEntry.query.filter(
+        QueueEntry.event_type == event_type,
+        QueueEntry.clicked_time == current_time_slot,
+        func.date(QueueEntry.registration_time) == today
+    ).all()
+
+    total_machines = 4 # since theres 4 of each type
+
+    return total_machines - len(booked)
+
+def upcoming_bookings():
+     today = datetime.now().date()
+
+    # Creating a 30 minute time window to check for bookings
+     current_hour = datetime.now().hour
+     current_minute = 30 if datetime.now().minute > 30 else 0
+     current_time_slot = f"{current_hour:02d}:{current_minute:02d}"
+
+    # Get the next 3 bookings
+     upcoming_bookings = QueueEntry.query.filter(
+        func.date(QueueEntry.registration_time) == today,
+        QueueEntry.clicked_time >= current_time_slot
+     ).order_by(QueueEntry.clicked_time).limit(3).all()
+
+     return upcoming_bookings

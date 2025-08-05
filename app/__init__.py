@@ -66,5 +66,9 @@ def create_app():
     from sms_messaging import sms_bp
     app.register_blueprint(sms_bp)
 
+    # Register blueprint for laundry routes
+    from .laundry import laundry_bp
+    app.register_blueprint(laundry_bp)
+
 
     return app

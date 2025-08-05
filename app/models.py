@@ -1,5 +1,6 @@
 # This file is responsible for creating and managing the User model and forms
-# for registration/login
+# for registration/login, changing password, username, school, and dorm
+
 from .extensions import db
 from flask_login import UserMixin
 from flask_wtf import FlaskForm
@@ -90,3 +91,21 @@ class ChangeUsernameForm(FlaskForm):
     )
 
     submit = SubmitField('Change Username', name='submit_username')
+
+# Form for changing school 
+class ChangeSchoolForm(FlaskForm):
+    school = SelectField(
+        'Select your school',
+        choices=[('University 1', 'University 1')],
+        validators=[InputRequired()]
+    )
+    submit = SubmitField('Change School', name='submit_school')
+
+# Form for changing dorm 
+class ChangeDormForm(FlaskForm):
+    dorm = SelectField(
+        'Select your dorm',
+        choices=[('Dorm 1', 'Dorm 1'), ('Dorm 2', 'Dorm 2')],
+        validators=[InputRequired()]
+    )
+    submit = SubmitField('Change Dorm', name='submit_dorm')

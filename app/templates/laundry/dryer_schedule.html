@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Schedule</title>
+</head>
+<body>
+    <h2> Dryer {{ dryer_id }} Schedule </h2>
+    <p>Available times:</p>
+    
+    <table>
+    {% for i in range(12) %}
+    <tr>
+        <td>
+            {% if i < early_morning|length %}
+            {% set slot = early_morning[i] %}
+            <form action="{{ url_for('laundry.book_dryer', dryer_id=dryer_id) }}" method="POST">
+                <input type="hidden" name="time_slot" value="{{ slot.db_value }}">
+                <input type="hidden" name="time_slot_display" value="{{ slot.display_value }}">
+                <button type="submit" {% if not slot.available %}disabled{% endif %}>
+                    {% if slot.available %}
+                        Book {{ slot.display_value }}
+                    {% else %}
+                        (Booked)
+                    {% endif %}
+                </button>
+            </form>
+            {% endif %}
+        </td>
+
+        <td>
+            {% if i < morning|length %}
+            {% set slot = morning[i] %}
+            <form action="{{ url_for('laundry.book_dryer', dryer_id=dryer_id) }}" method="POST">
+                <input type="hidden" name="time_slot" value="{{ slot.db_value }}">
+                <input type="hidden" name="time_slot_display" value="{{ slot.display_value }}">
+                <button type="submit" {% if not slot.available %}disabled{% endif %}>
+                    {% if slot.available %}
+                        Book {{ slot.display_value }}
+                    {% else %}
+                        (Booked)
+                    {% endif %}
+                </button>
+            </form>
+            {% endif %}
+        </td>
+
+        <td>
+            {% if i < afternoon|length %}
+            {% set slot = afternoon[i] %}
+            <form action="{{ url_for('laundry.book_dryer', dryer_id=dryer_id) }}" method="POST">
+                <input type="hidden" name="time_slot" value="{{ slot.db_value }}">
+                <input type="hidden" name="time_slot_display" value="{{ slot.display_value }}">
+                <button type="submit" {% if not slot.available %}disabled{% endif %}>
+                    {% if slot.available %}
+                        Book {{ slot.display_value }}
+                    {% else %}
+                        (Booked)
+                    {% endif %}
+                </button>
+            </form>
+            {% endif %}
+        </td>
+
+        <td>
+            {% if i < evening|length %}
+            {% set slot = evening[i] %}
+            <form action="{{ url_for('laundry.book_dryer', dryer_id=dryer_id) }}" method="POST">
+                <input type="hidden" name="time_slot" value="{{ slot.db_value }}">
+                <input type="hidden" name="time_slot_display" value="{{ slot.display_value }}">
+                <button type="submit" {% if not slot.available %}disabled{% endif %}>
+                    {% if slot.available %}
+                        Book {{ slot.display_value }}
+                    {% else %}
+                        (Booked)
+                    {% endif %}
+                </button>
+            </form>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+    </table>
+  </body>
+</html>

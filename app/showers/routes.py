@@ -1,3 +1,5 @@
+# This file is responsible for creating different routes for the shower blueprint
+
 from . import shower_bp, forms
 from flask import render_template, redirect, url_for, request, flash, session
 from datetime import datetime, timedelta
@@ -5,7 +7,6 @@ from app_queue.services import add_to_queue, shower_available
 from sms_messaging import services
 import pytz
 
-# Show the list of showers
 @shower_bp.route('/showers')
 def shower_list():
     return render_template('showers/showers.html')
@@ -53,7 +54,7 @@ def shower_schedule(shower_id):
                            early_morning=early_morning, morning=morning, afternoon=afternoon,
                              evening=evening)
 
-
+# Book a specific shower
 @shower_bp.route('/showers/<int:shower_id>/book', methods=['GET', 'POST'])
 def book_shower(shower_id):
     form = forms.EventRegistrationForm()

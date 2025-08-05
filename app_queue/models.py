@@ -1,3 +1,5 @@
+# This file is responsible for creating the QueueEntry model for our queue db
+
 from app.extensions import db
 from sqlalchemy import CheckConstraint, UniqueConstraint, func
 
