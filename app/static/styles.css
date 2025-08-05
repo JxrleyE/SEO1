@@ -11,7 +11,7 @@ body {
 
     background: linear-gradient(135deg, #e0f2f7, #c1e4ee); Softer, slightly blueish white
     position: relative;
-    overflow: hidden;
+    overflow-y: auto;
 }
 
 /* Background bubbles for enhanced glossy effect */
@@ -49,14 +49,12 @@ body::before {
     }
 }
 
-
 /* Container for the login form */
 .login-container {
     width: 90%;
     max-width: 400px;
     padding: 30px;
     border-radius: 16px;
-    /* Changed: Slightly more transparent background, added a subtle blue tint */
     background: rgba(255, 255, 255, 0.15); /* Slightly more transparent */
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
     backdrop-filter: blur(12px); /* Increased blur for more pronounced glass effect */
@@ -65,7 +63,6 @@ body::before {
     border: 1px solid rgba(173, 216, 230, 0.3); /* Light blue, more transparent */
     text-align: center;
     z-index: 1;
-    /* Added: Slight perspective transform for subtle 3D glass look */
     transition: transform 0.3s ease-in-out; /* For hover effect */
 }
 
@@ -86,14 +83,12 @@ input[type="text"],
 input[type="password"] {
     padding: 12px 16px;
     border-radius: 8px;
-    /* Changed: Slightly more transparent input fields, hint of blue */
     border: 1px solid rgba(173, 216, 230, 0.4); /* Lighter, bluer border */
     background: rgba(255, 255, 255, 0.6); /* Slightly more transparent */
     font-size: 16px;
     transition: all 0.3s ease;
     width: 100%;
     box-sizing: border-box;
-    /* Added: Inner shadow for depth on input fields */
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
@@ -114,14 +109,12 @@ input[type="submit"] {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    /* Added: Subtle button shadow for lift */
     box-shadow: 0 4px 8px rgba(74, 144, 226, 0.2);
 }
 
 input[type="submit"]:hover {
     background: #3a7bc8;
     transform: translateY(-2px);
-    /* Changed: Enhanced hover shadow */
     box-shadow: 0 6px 12px rgba(74, 144, 226, 0.3);
 }
 
@@ -133,7 +126,6 @@ input[type="submit"]:hover {
     border: 1px solid #e74c3c;
     background-color: rgba(231, 76, 60, 0.1);
     border-radius: 8px;
-    /* Added: Subtle text shadow for readability on glassy background */
     text-shadow: 0 0 2px rgba(255, 255, 255, 0.5);
 }
 
@@ -144,7 +136,6 @@ a {
     margin-top: 16px;
     display: inline-block;
     transition: all 0.3s ease;
-    /* Added: Subtle text shadow for readability */
     text-shadow: 0 0 1px rgba(255, 255, 255, 0.7);
 }
 
@@ -159,8 +150,6 @@ a:hover {
         padding: 20px;
     }
 }
-
-/* Add these rules to your existing login.css (or styles.css) file */
 
 /* --- Home Page Specific Styles --- */
 
@@ -248,13 +237,9 @@ a:hover {
     }
 }
 
-/* Add/Modify these rules in your existing login.css */
 
-/* ... (your existing CSS for body, body::before, .login-container, h1, form, input[type="text"], input[type="password"], input[type="submit"], .error-message, a, @media) ... */
-
-
-/* New/Modified: Styling for Select fields (like school/dorm dropdowns) */
-.form-select { /* Apply this class to your form.school and form.dorm in HTML */
+/* Styling for Select fields (like school/dorm dropdowns) */
+.form-select {
     padding: 12px 16px;
     border-radius: 8px;
     border: 1px solid rgba(173, 216, 230, 0.5); /* Lighter, bluer border */
@@ -281,7 +266,6 @@ a:hover {
     box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.3), inset 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-/* You might want to style labels if they are not already */
 label {
     display: block; /* Make labels take full width */
     text-align: left; /* Align label text to the left */
@@ -303,7 +287,6 @@ input[type="submit"] {
     margin-top: 10px; /* Adjust as needed for spacing */
 }
 
-/* Add these new rules to your existing login.css (or styles.css) file */
 
 /* --- Settings Page Specific Styles --- */
 
@@ -319,10 +302,8 @@ input[type="submit"] {
     align-items: center;
     flex-direction: column; /* Stack contents vertically */
 
-    /* Inherit/Adjust for 3D perspective if desired, or keep flat */
     transition: transform 0.3s ease-in-out;
 }
-
 
 /* The inner container for forms - White Glossy Box */
 .settings-white-box {
@@ -428,8 +409,6 @@ input[type="submit"] {
 
 /* Reusing .glass-button-link for dashboard/logout links */
 .settings-links .glass-button-link {
-    /* You might want to override some glass-button-link styles if they clash with white box */
-    /* Example: if text color needs to be darker on a white box background */
     color: #4a90e2; /* Ensure it's blue if base is white */
     border: 1px solid rgba(74, 144, 226, 0.3); /* Adjust border to match theme */
     background: rgba(255, 255, 255, 0.6); /* Slightly more transparent white if needed */
@@ -442,7 +421,7 @@ input[type="submit"] {
     transform: translateY(-1px) scale(1.01);
 }
 
-Responsive adjustments for settings page
+/* Responsive adjustments for settings page */
 @media (max-width: 600px) {
     .settings-page-background {
         padding: 20px;
@@ -460,7 +439,6 @@ Responsive adjustments for settings page
     }
 }
 
-/* Add these new rules to your existing login.css (or styles.css) file */
 
 /* --- Showers Page Specific Styles --- */
 
@@ -548,7 +526,6 @@ Responsive adjustments for settings page
     }
 }
 
-/* Add these new rules to your existing login.css (or styles.css) file */
 
 /* --- Dashboard Page Specific Styles --- */
 
@@ -570,7 +547,6 @@ Responsive adjustments for settings page
     z-index: 1;
     transition: transform 0.3s ease-in-out;
 }
-
 
 /* Profile Header Styling */
 .profile-header {
@@ -655,24 +631,6 @@ Responsive adjustments for settings page
     padding: 10px 20px; /* Smaller padding */
     font-size: 0.9em;
     margin-top: 15px; /* Space from above text */
-}
-
-/* Styling for disabled buttons */
-.disabled-button {
-    opacity: 0.6;
-    cursor: not-allowed;
-    background: rgba(255, 255, 255, 0.1); /* Lighter background for disabled */
-    color: #777;
-    border: 1px solid rgba(173, 216, 230, 0.2);
-    box-shadow: none;
-    transform: none;
-}
-
-.disabled-button:hover {
-    background: rgba(255, 255, 255, 0.1); /* No change on hover for disabled */
-    color: #777;
-    box-shadow: none;
-    transform: none;
 }
 
 /* Container for dashboard/logout links at the bottom */
@@ -763,7 +721,6 @@ Responsive adjustments for settings page
     }
 }
 
-/* Update these existing rules and add new ones in your login.css (or styles.css) file */
 
 /* --- Schedule Page Specific Styles --- */
 
@@ -784,8 +741,7 @@ Responsive adjustments for settings page
     z-index: 1;
 }
 
-
-/* Styling for "Book" and "(Booked)" buttons - now with a more SOLID background */
+/* Styling for "Book" and "(Booked)" buttons */
 .schedule-button {
     padding: 10px 15px;
     border-radius: 8px;
