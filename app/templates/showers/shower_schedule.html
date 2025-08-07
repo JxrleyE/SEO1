@@ -3,84 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Schedule</title>
+    <title>Shower Schedule</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h2> Shower {{ shower_id }} Schedule </h2>
-    <p>Available times:</p>
-    
-    <table>
-    {% for i in range(12) %}
-    <tr>
-        <td>
-            {% if i < early_morning|length %}
-            {% set slot = early_morning[i] %}
-            <form action="{{ url_for('showers.book_shower', shower_id=shower_id) }}" method="POST">
-                <input type="hidden" name="time_slot" value="{{ slot.db_value }}">
-                <input type="hidden" name="time_slot_display" value="{{ slot.display_value }}">
-                <button type="submit" {% if not slot.available %}disabled{% endif %}>
-                    {% if slot.available %}
-                        Book {{ slot.display_value }}
-                    {% else %}
-                        (Booked)
-                    {% endif %}
-                </button>
-            </form>
-            {% endif %}
-        </td>
+    <div class="schedule-container">
+        <h2>Shower {{ shower_id }} Schedule</h2>
+        <p class="available-times-text">Available times:</p>
+        
+        <div class="schedule-table-wrapper">
+            <table class="schedule-table">
+                <thead>
+                    <tr>
+                        <th>Early Morning</th>
+                        <th>Morning</th>
+                        <th>Afternoon</th>
+                        <th>Evening</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for i in range(12) %}
+                <tr>
+                    <td>
+                        {% if i < early_morning|length %}
+                        {% set slot = early_morning[i] %}
+                        <form action="{{ url_for('showers.book_shower', shower_id=shower_id) }}" method="POST">
+                            <input type="hidden" name="time_slot" value="{{ slot.db_value }}">
+                            <input type="hidden" name="time_slot_display" value="{{ slot.display_value }}">
+                            <button type="submit" class="schedule-button {% if not slot.available %}disabled{% endif %}" {% if not slot.available %}disabled{% endif %}>
+                                {% if slot.available %}
+                                    Book {{ slot.display_value }}
+                                {% else %}
+                                    (Booked)
+                                {% endif %}
+                            </button>
+                        </form>
+                        {% endif %}
+                    </td>
 
-        <td>
-            {% if i < morning|length %}
-            {% set slot = morning[i] %}
-            <form action="{{ url_for('showers.book_shower', shower_id=shower_id) }}" method="POST">
-                <input type="hidden" name="time_slot" value="{{ slot.db_value }}">
-                <input type="hidden" name="time_slot_display" value="{{ slot.display_value }}">
-                <button type="submit" {% if not slot.available %}disabled{% endif %}>
-                    {% if slot.available %}
-                        Book {{ slot.display_value }}
-                    {% else %}
-                        (Booked)
-                    {% endif %}
-                </button>
-            </form>
-            {% endif %}
-        </td>
+                    <td>
+                        {% if i < morning|length %}
+                        {% set slot = morning[i] %}
+                        <form action="{{ url_for('showers.book_shower', shower_id=shower_id) }}" method="POST">
+                            <input type="hidden" name="time_slot" value="{{ slot.db_value }}">
+                            <input type="hidden" name="time_slot_display" value="{{ slot.display_value }}">
+                            <button type="submit" class="schedule-button {% if not slot.available %}disabled{% endif %}" {% if not slot.available %}disabled{% endif %}>
+                                {% if slot.available %}
+                                    Book {{ slot.display_value }}
+                                {% else %}
+                                    (Booked)
+                                {% endif %}
+                            </button>
+                        </form>
+                        {% endif %}
+                    </td>
 
-        <td>
-            {% if i < afternoon|length %}
-            {% set slot = afternoon[i] %}
-            <form action="{{ url_for('showers.book_shower', shower_id=shower_id) }}" method="POST">
-                <input type="hidden" name="time_slot" value="{{ slot.db_value }}">
-                <input type="hidden" name="time_slot_display" value="{{ slot.display_value }}">
-                <button type="submit" {% if not slot.available %}disabled{% endif %}>
-                    {% if slot.available %}
-                        Book {{ slot.display_value }}
-                    {% else %}
-                        (Booked)
-                    {% endif %}
-                </button>
-            </form>
-            {% endif %}
-        </td>
+                    <td>
+                        {% if i < afternoon|length %}
+                        {% set slot = afternoon[i] %}
+                        <form action="{{ url_for('showers.book_shower', shower_id=shower_id) }}" method="POST">
+                            <input type="hidden" name="time_slot" value="{{ slot.db_value }}">
+                            <input type="hidden" name="time_slot_display" value="{{ slot.display_value }}">
+                            <button type="submit" class="schedule-button {% if not slot.available %}disabled{% endif %}" {% if not slot.available %}disabled{% endif %}>
+                                {% if slot.available %}
+                                    Book {{ slot.display_value }}
+                                {% else %}
+                                    (Booked)
+                                {% endif %}
+                            </button>
+                        </form>
+                        {% endif %}
+                    </td>
 
-        <td>
-            {% if i < evening|length %}
-            {% set slot = evening[i] %}
-            <form action="{{ url_for('showers.book_shower', shower_id=shower_id) }}" method="POST">
-                <input type="hidden" name="time_slot" value="{{ slot.db_value }}">
-                <input type="hidden" name="time_slot_display" value="{{ slot.display_value }}">
-                <button type="submit" {% if not slot.available %}disabled{% endif %}>
-                    {% if slot.available %}
-                        Book {{ slot.display_value }}
-                    {% else %}
-                        (Booked)
-                    {% endif %}
-                </button>
-            </form>
-            {% endif %}
-        </td>
-    </tr>
-    {% endfor %}
-    </table>
-  </body>
+                    <td>
+                        {% if i < evening|length %}
+                        {% set slot = evening[i] %}
+                        <form action="{{ url_for('showers.book_shower', shower_id=shower_id) }}" method="POST">
+                            <input type="hidden" name="time_slot" value="{{ slot.db_value }}">
+                            <input type="hidden" name="time_slot_display" value="{{ slot.display_value }}">
+                            <button type="submit" class="schedule-button {% if not slot.available %}disabled{% endif %}" {% if not slot.available %}disabled{% endif %}>
+                                {% if slot.available %}
+                                    Book {{ slot.display_value }}
+                                {% else %}
+                                    (Booked)
+                                {% endif %}
+                            </button>
+                        </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div> 
+
+        <div class="dashboard-links">
+             <a href="{{ url_for('showers.shower_list') }}" class="glass-button-link">Back to Showers</a>
+             <a href="{{ url_for('home.logout') }}" class="glass-button-link">Logout</a>
+        </div>
+    </div>
+</body>
 </html>

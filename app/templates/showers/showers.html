@@ -4,24 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Showers </title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h2> Select a shower: </h2>
+    <div class="showers-container">
+        <h2>Select a shower:</h2>
 
-    <a href="{{ url_for('showers.shower_schedule', shower_id=1) }}">
-        <h3> Shower 1 </h3>
-    </a>
-    <a href="{{ url_for('showers.shower_schedule', shower_id=2) }}">
-        <h3> Shower 2 </h3>
-    </a>
-    <a href="{{ url_for('showers.shower_schedule', shower_id=3) }}">
-        <h3> Shower 3 </h3>
-    </a>
-    <a href="{{ url_for('showers.shower_schedule', shower_id=4) }}">
-        <h3> Shower 4 </h3>
-    </a>
+        <div class="shower-selection-grid">
+            <a href="{{ url_for('showers.shower_schedule', shower_id=1) }}" class="glass-button-link">
+                <h3>Shower 1</h3>
+            </a>
+            <a href="{{ url_for('showers.shower_schedule', shower_id=2) }}" class="glass-button-link">
+                <h3>Shower 2</h3>
+            </a>
+            <a href="{{ url_for('showers.shower_schedule', shower_id=3) }}" class="glass-button-link">
+                <h3>Shower 3</h3>
+            </a>
+            <a href="{{ url_for('showers.shower_schedule', shower_id=4) }}" class="glass-button-link">
+                <h3>Shower 4</h3>
+            </a>
+        </div>
 
-    <a href="{{ url_for('home.dashboard') }}">Dashboard</a>
-    <a href="{{ url_for('home.logout') }}">Logout</a><br>
+        <div class="settings-links">
+            <a href="{{ url_for('home.dashboard') }}" class="glass-button-link">Dashboard</a>
+            <a href="{{ url_for('home.logout') }}" class="glass-button-link">Logout</a>
+        </div>
+    </div>
 </body>
 </html>

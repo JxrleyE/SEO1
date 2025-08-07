@@ -34,11 +34,11 @@ def send_confirmation_message(phone_number, event, registration_time, duration):
         message = "You have registered to {event} at {registration_time} with a duration of {duration} minutes!"
     '''
     try:
-        # message = client.messages.create(
-        #     body=f"You have registered to {event} at {registration_time} with a duration of {duration} minutes!",
-        #     from_=TWILIO_PHONE_NUMBER,
-        #     to=PERSONAL_NUMBER,
-        # )
+        message = client.messages.create(
+            body=f"Hello! You have registered to {event} at {registration_time}!",
+            from_=TWILIO_PHONE_NUMBER,
+            to=PERSONAL_NUMBER,
+        )
 
         print(f"Successful sending registration message to {phone_number} with {event} at {registration_time} with duration {duration}!")
         return True
@@ -54,14 +54,14 @@ def send_reminder_message(app):
     print(f"--- send_reminder_message job triggered at {datetime.utcnow()} ---") # Debug print
 
     with app.app_context():
-        REMINDER_10_MINUTES = 10
+        REMINDER_30_MINUTES = 30
         # Cooldown for sending reminders
-        REMINDER_THRESHOLD_MINUTES = 5
+        REMINDER_THRESHOLD_MINUTES = 15
         current_utc_time = datetime.utcnow()
         
         # Define the window for upcoming appointments
         reminder_window_start = current_utc_time
-        reminder_window_end = current_utc_time + timedelta(minutes=REMINDER_10_MINUTES)
+        reminder_window_end = current_utc_time + timedelta(minutes=REMINDER_30_MINUTES)
 
         app.logger.info(f"Reminder window: {reminder_window_start} to {reminder_window_end}")
 
@@ -85,7 +85,7 @@ def send_reminder_message(app):
                 time_difference = entry.registration_time - current_utc_time
                 minutes = time_difference.total_seconds() / 60
 
-                if 0 < minutes <= REMINDER_10_MINUTES:
+                if 0 < minutes <= REMINDER_30_MINUTES:
                     try:
                         message = client.messages.create(
                             body=f"Reminder: You have registered to {entry.event_type} at {entry.registration_time.strftime('%I:%M %p UTC')}, {int(minutes)} minutes from now. Your current position is {entry.position}.",
@@ -172,3 +172,16 @@ def send_appointment_message(app):
 
     return True
 
+
+def send_cancellation_message(phone_number, event, registration_time):
+    '''
+    Notifies user about a cancellation of an event
+    '''
+    try:
+        message = client.messages.create(
+            body=f"You have cancelled the {event} taking place at {registration_time} UTC!",
+            from_=TWILIO_PHONE_NUMBER,
+            to=PERSONAL_NUMBER
+        )
+    except Exception as e:
+        print(f'Error occurred during send_cancellation_message: {e}')

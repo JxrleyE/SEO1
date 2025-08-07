@@ -4,44 +4,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Home</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 </head>
-
 <body>
-    <h1>Welcome {{user.username}} </h1>
+    <div class="settings-page-background">
+        <div class="settings-white-box">
+            <h1>Welcome {{ user.username }}</h1>
 
-    {% if error %}
-        <div style="color: red; margin: 10px 0; padding: 10px; border: 1px solid red; background-color: #ffe6e6;">
-            {{ error }}
+            {% if error %}
+                <div class="error-message">
+                    {{ error }}
+                </div>
+            {% endif %}
+
+            <form method="POST" action="" class="settings-form">
+                {{ username_form.hidden_tag() }}
+                <label for="current_username">Current Username:</label>
+                {{ username_form.current_username(class="form-input") }}
+                <label for="new_username">New Username:</label>
+                {{ username_form.new_username(class="form-input") }}
+                {{ username_form.submit(class="form-submit-button") }}
+            </form>
+
+            <form method="POST" action="" class="settings-form">
+                {{ password_form.hidden_tag() }}
+                <label for="current_password">Current Password:</label>
+                {{ password_form.current_password(class="form-input") }}
+                <label for="new_password">New Password:</label>
+                {{ password_form.new_password(class="form-input") }}
+                {{ password_form.submit(class="form-submit-button") }}
+            </form>
+
+            {# UPDATED: Added labels and classes to match #}
+            <form method="POST" action="" class="settings-form">
+                {{ change_school_form.hidden_tag() }}
+                <label for="school">Change School:</label>
+                {{ change_school_form.school(class="form-input") }}
+                {{ change_school_form.submit(class="form-submit-button") }}
+            </form>
+
+            {# UPDATED: Added labels and classes to match #}
+            <form method="POST" action="" class="settings-form">
+                {{ change_dorm_form.hidden_tag() }}
+                <label for="dorm">Change Dorm:</label>
+                {{ change_dorm_form.dorm(class="form-input") }}
+                {{ change_dorm_form.submit(class="form-submit-button") }}
+            </form>
+
+            <div class="settings-links">
+                <a href="{{ url_for('home.dashboard') }}" class="glass-button-link">Dashboard</a>
+                <a href="{{ url_for('home.logout') }}" class="glass-button-link">Logout</a>
+            </div>
         </div>
-    {% endif %}
-
-    <form method ="POST" action="">
-        {{ username_form.hidden_tag()}}
-        {{ username_form.current_username }}
-        {{ username_form.new_username }}
-        {{ username_form.submit }}
-    </form>
-
-    <form method ="POST" action="">
-        {{ password_form.hidden_tag()}}
-        {{ password_form.current_password }}
-        {{ password_form.new_password }}
-        {{ password_form.submit }}
-    </form>
-
-    <form method ="POST" action="">
-        {{ change_school_form.hidden_tag()}}
-        {{ change_school_form.school }}
-        {{ change_school_form.submit }}
-    </form>
-
-    <form method ="POST" action="">
-        {{ change_dorm_form.hidden_tag()}}
-        {{ change_dorm_form.dorm }}
-        {{ change_dorm_form.submit }}
-    </form>
-
-    <a href="{{ url_for('home.dashboard') }}">Dashboard</a>
-    <a href="{{ url_for('home.logout') }}">Logout</a><br>
+    </div>
 </body>
 </html>

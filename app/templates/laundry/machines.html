@@ -4,39 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Showers </title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h2> Select a washer: </h2>
+    <div class="showers-container">
+        <h2> Select a washer: </h2>
 
-    <a href="{{ url_for('laundry.washer_schedule', washer_id=1) }}">
-        <h3> Shower 1 </h3>
-    </a>
-    <a href="{{ url_for('laundry.washer_schedule', washer_id=2) }}">
-        <h3> Shower 2 </h3>
-    </a>
-    <a href="{{ url_for('laundry.washer_schedule', washer_id=3) }}">
-        <h3> Shower 3 </h3>
-    </a>
-    <a href="{{ url_for('laundry.washer_schedule', washer_id=4) }}">
-        <h3> Shower 4 </h3>
-    </a>
+        <div class="shower-selection-grid">
+            <a href="{{ url_for('laundry.washer_schedule', washer_id=1) }}" class="glass-button-link">
+                <h3> Washer 1 </h3>
+            </a>
+            <a href="{{ url_for('laundry.washer_schedule', washer_id=2) }}" class="glass-button-link">
+                <h3> Washer 2 </h3>
+            </a>
+            <a href="{{ url_for('laundry.washer_schedule', washer_id=3) }}" class="glass-button-link">
+                <h3> Washer 3 </h3>
+            </a>
+            <a href="{{ url_for('laundry.washer_schedule', washer_id=4) }}" class="glass-button-link">
+                <h3> Washer 4 </h3>
+            </a>
+        </div>
 
-    <h2> Select a Dryer: </h2>
+        <h2> Select a Dryer: </h2>
 
-    <a href="{{ url_for('laundry.dryer_schedule', dryer_id=1) }}">
-        <h3> Dryer 1 </h3>
-    </a>
-    <a href="{{ url_for('laundry.dryer_schedule', dryer_id=2) }}">
-        <h3> Dryer 2 </h3>
-    </a>
-    <a href="{{ url_for('laundry.dryer_schedule', dryer_id=3) }}">
-        <h3> Dryer 3 </h3>
-    </a>
-    <a href="{{ url_for('laundry.dryer_schedule', dryer_id=4) }}">
-        <h3> Dryer 4 </h3>
-    </a>
+        <div class="shower-selection-grid">
+            <a href="{{ url_for('laundry.dryer_schedule', dryer_id=1) }}" class="glass-button-link">
+                <h3> Dryer 1 </h3>
+            </a>
+            <a href="{{ url_for('laundry.dryer_schedule', dryer_id=2) }}" class="glass-button-link">
+                <h3> Dryer 2 </h3>
+            </a>
+            <a href="{{ url_for('laundry.dryer_schedule', dryer_id=3) }}" class="glass-button-link">
+                <h3> Dryer 3 </h3>
+            </a>
+            <a href="{{ url_for('laundry.dryer_schedule', dryer_id=4) }}" class="glass-button-link">
+                <h3> Dryer 4 </h3>
+            </a>
+        </div>
 
-    <a href="{{ url_for('home.dashboard') }}">Dashboard</a>
-    <a href="{{ url_for('home.logout') }}">Logout</a><br>
+        <div class="settings-links">
+                <a href="{{ url_for('home.dashboard') }}" class="glass-button-link">Dashboard</a>
+                <a href="{{ url_for('home.logout') }}" class="glass-button-link">Logout</a>
+        </div>
+    </div>
 </body>
 </html>

@@ -4,32 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1> Register Page</h1>
+    <div class="login-container">
+        <h1> Register Page</h1>
 
-    {% if form.errors %}
-        <div style="color: red; margin: 10px 0; padding: 10px; border: 1px solid red; background-color: #ffe6e6;">
-            {% for field, errors in form.errors.items() %}
-                {% for error in errors %}
-                    <div>{{ error }}</div>
+        {% if form.errors %}
+            <div style="color: red; margin: 10px 0; padding: 10px; border: 1px solid red; background-color: #ffe6e6;">
+                {% for field, errors in form.errors.items() %}
+                    {% for error in errors %}
+                        <div>{{ error }}</div>
+                    {% endfor %}
                 {% endfor %}
-            {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if error %}  <!-- Add this section -->
+        <div style="color: red; margin: 10px 0; padding: 10px; border: 1px solid red; background-color: #ffe6e6;">
+            {{ error }}
         </div>
-    {% endif %}
+        {% endif %}
 
-    {% if error %}  <!-- Add this section -->
-    <div style="color: red; margin: 10px 0; padding: 10px; border: 1px solid red; background-color: #ffe6e6;">
-        {{ error }}
+        <form method ="POST" action="{{ url_for('laundry.book_washer', washer_id=washer_id) }}">
+            {{ form.hidden_tag() }}
+            {{ form.phone_number }}
+            {{ form.time_zone }}
+            {{ form.submit }}
+        </form>
+
+        <div class="dashboard-links">
+            <a href="{{ url_for('laundry.laundry_list') }}" class="glass-button-link">Back to Laundry</a>
+        </div>
+
     </div>
-    {% endif %}
-
-    <form method ="POST" action="{{ url_for('laundry.book_washer', washer_id=washer_id) }}">
-        {{ form.hidden_tag() }}
-        {{ form.phone_number }}
-        {{ form.time_zone }}
-        {{ form.submit }}
-    </form>
 
 </body>
 </html>
