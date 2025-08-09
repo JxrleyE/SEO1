@@ -123,20 +123,22 @@ def available_count(event_type):
         slot1 = f"{next_hour:02d}:00"
         slot2 = f"{next_hour:02d}:30"
 
-    # Get all bookings for the current 30 minute time window for a machine
+    # Get all bookings for the 00:30 and 01:00
     slot1_booked = QueueEntry.query.filter(
         QueueEntry.event_type == event_type,
         QueueEntry.clicked_time == slot1,
         func.date(QueueEntry.registration_time) == today
     ).all()
 
+    # Get all bookings for the 01:00 and 01:30
     slot2_booked = QueueEntry.query.filter(
         QueueEntry.event_type == event_type,
         QueueEntry.clicked_time == slot2,
         func.date(QueueEntry.registration_time) == today
     ).all()
 
-    return min(4 - len(slot1_booked)) + len(4 - len(slot2_booked))
+    # Whichever slot has less available machines, return that number
+    return min(4 - len(slot1_booked), 4 - len(slot2_booked))
 
 def upcoming_bookings():
      today = datetime.now().date()
