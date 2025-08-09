@@ -139,3 +139,20 @@ def upcoming_bookings():
      ).order_by(QueueEntry.clicked_time).limit(3).all()
 
      return upcoming_bookings
+
+def next_available_time(event_type):
+    today = datetime.now().date()
+
+    # Creating a 30 minute time window to check for bookings
+    current_hour = datetime.now().hour
+    current_minute = 30 if datetime.now().minute > 30 else 0
+    current_time_slot = f"{current_hour:02d}:{current_minute:02d}"
+
+     # Get the next booking
+    upcoming_bookings = QueueEntry.query.filter(
+        func.date(QueueEntry.registration_time) == today,
+        QueueEntry.event_type == event_type,
+        QueueEntry.clicked_time >= current_time_slot
+     ).order_by(QueueEntry.clicked_time).limit(1).all()
+
+    return upcoming_bookings[0].clicked_time if upcoming_bookings else None
