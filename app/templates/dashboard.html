@@ -41,8 +41,8 @@
 
         <div class="queue-section">
             <h3> SHOWER QUEUE</h3>
-            <p>Current Status: <strong> {{ shower_count }} showers available</strong></p>
-            <p>Next available: <strong> shower # : time </strong></p>
+            <p>Current Status: <strong> {{ shower_count }} showers available </strong></p>
+            <p>Next available: <strong> Shower #{{ next_available_time_shower.machine_id }} : {{ next_available_time_shower.time_slot }} </strong></p>
             <a href="{{ url_for('showers.shower_list') }}" >
                 <button class="glass-button-link small-button">View All Showers</button>
             </a>
@@ -53,7 +53,8 @@
             <p>Current Status: <strong> {{ washer_count }} washers available : </strong>
                                     <strong>{{ dryer_count }} dryers available</strong>
             </p>
-            <p>Next available: <strong> dryer # : time </strong></p>
+            <p>Next available: <strong> Dryer #{{ next_available_time_dryer.machine_id }} : {{ next_available_time_dryer.time_slot }} </strong></p>
+            <p>Next available: <strong> Washer #{{ next_available_time_washer.machine_id }} : {{ next_available_time_washer.time_slot }} </strong></p>
             <a href="{{ url_for('laundry.laundry_list') }}">
                 <button class="glass-button-link small-button">View All Washers</button>
             </a>
