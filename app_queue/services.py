@@ -110,19 +110,33 @@ def available_count(event_type):
 
     # Creating a 30 minute time window to check for bookings
     current_hour = datetime.now().hour
-    current_minute = 30 if datetime.now().minute > 30 else 0
-    current_time_slot = f"{current_hour:02d}:{current_minute:02d}"
+    current_minute = datetime.now().minute
+
+    # if its 10:15, it would check the 10:30 and 11:00 time 
+    if current_minute < 30:
+        slot1 = f"{current_hour:02d}:30"
+        next_hour = (current_hour + 1) % 24
+        slot2 = f"{next_hour:02d}:00"
+    else:
+        # if its 10:45, it would check the 11:00 and 11:30 time 
+        next_hour = (current_hour + 1) % 24
+        slot1 = f"{next_hour:02d}:00"
+        slot2 = f"{next_hour:02d}:30"
 
     # Get all bookings for the current 30 minute time window for a machine
-    booked = QueueEntry.query.filter(
+    slot1_booked = QueueEntry.query.filter(
         QueueEntry.event_type == event_type,
-        QueueEntry.clicked_time == current_time_slot,
+        QueueEntry.clicked_time == slot1,
         func.date(QueueEntry.registration_time) == today
     ).all()
 
-    total_machines = 4 # since theres 4 of each type
+    slot2_booked = QueueEntry.query.filter(
+        QueueEntry.event_type == event_type,
+        QueueEntry.clicked_time == slot2,
+        func.date(QueueEntry.registration_time) == today
+    ).all()
 
-    return total_machines - len(booked)
+    return min(4 - len(slot1_booked)) + len(4 - len(slot2_booked))
 
 def upcoming_bookings():
      today = datetime.now().date()
