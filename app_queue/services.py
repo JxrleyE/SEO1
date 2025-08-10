@@ -168,7 +168,7 @@ def next_available_time(event_type):
         for minute in [0,30]:
             time = f"{hour:02d}:{minute:02d}"
             # Add time to list only if its after the current time were checking
-            if time > current_time:
+            if time >= current_time:
                 time_slots.append(time)
 
     # Now check each time to see which is next available
