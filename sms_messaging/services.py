@@ -37,7 +37,7 @@ def send_confirmation_message(phone_number, event, registration_time, duration):
         message = client.messages.create(
             body=f"Hello! You have registered to {event} at {registration_time}!",
             from_=TWILIO_PHONE_NUMBER,
-            to=PERSONAL_NUMBER,
+            to=phone_number,
         )
 
         print(f"Successful sending registration message to {phone_number} with {event} at {registration_time} with duration {duration}!")
@@ -90,7 +90,7 @@ def send_reminder_message(app):
                         message = client.messages.create(
                             body=f"Reminder: You have registered to {entry.event_type} at {entry.registration_time.strftime('%I:%M %p UTC')}, {int(minutes)} minutes from now. Your current position is {entry.position}.",
                             from_=TWILIO_PHONE_NUMBER,
-                            to=PERSONAL_NUMBER,
+                            to=entry.phone_number,
                         )
                         # Update last_reminder_time after successful sending
                         entry.last_reminder_time = current_utc_time
@@ -142,7 +142,7 @@ def send_appointment_message(app):
                     message = client.messages.create(
                         body=f"The {appointment.event_type} you have registered for will be taking place right now! Have Fun!",
                         from_=TWILIO_PHONE_NUMBER,
-                        to=PERSONAL_NUMBER,
+                        to=appointment.phone_number,
                     )
 
                     event_type_for_update = appointment.event_type
@@ -181,7 +181,7 @@ def send_cancellation_message(phone_number, event, registration_time):
         message = client.messages.create(
             body=f"You have cancelled the {event} taking place at {registration_time} UTC!",
             from_=TWILIO_PHONE_NUMBER,
-            to=PERSONAL_NUMBER
+            to=phone_number
         )
     except Exception as e:
         print(f'Error occurred during send_cancellation_message: {e}')
