@@ -28,8 +28,7 @@
             <ul class="queue-list">
                 {% for entry in queue_entries %}
                 <li class="queue-item">
-                    <span>{{ entry.event_type }} - {{ datetime.strptime(entry.clicked_time, '%H:%M').strftime('%I:%M %p') }} -
-                    {{ (datetime.strptime(entry.clicked_time, '%H:%M') + timedelta(minutes=30)).strftime('%I:%M %p') }}</span>
+                    <span>{{ entry.event_type }} - {{ entry.clicked_time }}</span>
                     <form action="{{ url_for('home.cancel_booking', booking_id=entry.id) }}" method="POST">
                         <button type="submit" class="cancel-button">Cancel booking</button>
                     </form>
