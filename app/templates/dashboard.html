@@ -65,9 +65,7 @@
             <ul class="queue-list"> {# Used queue-list for styling #}
                 {% for booking in upcoming_bookings %}
                 <li class="queue-item"> {# Used queue-item for styling #}
-                    <span>{{ booking.event_type }} #{{ booking.shower_id }} - 
-                    {{ datetime.strptime(booking.clicked_time, '%H:%M').strftime('%I:%M %p') }} -
-                    {{ (datetime.strptime(booking.clicked_time, '%H:%M') + timedelta(minutes=30)).strftime('%I:%M %p') }}</span>
+                    <span>{{ booking.event_type }} #{{ booking.shower_id }} - {{ booking.clicked_time }}</span>
                 </li>
                 {% endfor %}
             </ul>
