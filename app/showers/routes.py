@@ -5,6 +5,7 @@ from flask import render_template, redirect, url_for, request, flash, session
 from datetime import datetime, timedelta
 from app_queue.services import add_to_queue, shower_available
 from sms_messaging import services
+from app_queue.models import QueueEntry
 import pytz
 
 @shower_bp.route('/showers')
@@ -95,9 +96,10 @@ def book_shower(shower_id):
         # Place info into db
         try:
             print("Calling adding to queue", phone_number, event, shower_id, booking_time_utc, duration)
-            add_to_queue(phone_number, event, shower_id, booking_time_utc, duration, time_slot_display)
+            add_to_queue(phone_number, event, shower_id, booking_time_utc, duration, time_slot, time_slot_display)
             print("Added to queue successfully!")
-            services.send_confirmation_message(phone_number, event, time_slot_display, duration)
+            saved_entry = QueueEntry.query.filter_by(phone_number=phone_number, event_type=event).order_by(QueueEntry.id.desc()).first()
+            services.send_confirmation_message(phone_number, event, saved_entry.display_time, duration)
             flash(f'You have successfully registered to {event} at {time_slot_display}!', 'success')
             return redirect(url_for('home.dashboard'))
         except Exception as e:
