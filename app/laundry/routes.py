@@ -137,7 +137,7 @@ def book_washer(washer_id):
         # Place info into db
         try:
             print("Calling adding to queue", phone_number, event, washer_id, booking_time_utc, duration)
-            add_to_queue(phone_number, event, washer_id, booking_time_utc, duration, time_slot_display)
+            add_to_queue(phone_number, event, washer_id, booking_time_utc, duration, time_slot, time_slot_display)
             print("Added to queue successfully!")
             services.send_confirmation_message(phone_number, event, booking_time_utc, duration)
             flash(f'You have successfully registered to {event} at {time_slot_display}!', 'success')
@@ -189,7 +189,7 @@ def book_dryer(dryer_id):
         # Place info into db
         try:
             print("Calling adding to queue", phone_number, event, dryer_id, booking_time_utc, duration)
-            add_to_queue(phone_number, event, dryer_id, booking_time_utc, duration, time_slot)
+            add_to_queue(phone_number, event, dryer_id, booking_time_utc, duration, time_slot, time_slot_display)
             print("Added to queue successfully!")
             services.send_confirmation_message(phone_number, event, booking_time_utc, duration)
             flash(f'You have successfully registered to {event} at {time_slot_display}!', 'success')

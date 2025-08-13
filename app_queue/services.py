@@ -40,6 +40,7 @@ def add_to_queue(phone_number: str, event: str, shower_id: int,
         duration=duration,
         position=new_position,
         clicked_time=clicked_time,
+        display_time=display_time,
         shower_id=shower_id,
         user_id=current_user.id
     )

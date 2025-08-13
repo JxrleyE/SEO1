@@ -24,6 +24,7 @@ class QueueEntry(db.Model):
     shower_id = db.Column(db.Integer, nullable=False)
     user_id = db.Column(db.Integer, nullable=False)
     clicked_time = db.Column(db.String(20), nullable=False)
+    display_time = db.Column(db.String(20), nullable=False)
 
     # Define constraints
     __table_args__ = (
