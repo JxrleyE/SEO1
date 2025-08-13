@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 from app_queue.services import add_to_queue, machine_available
 from sms_messaging import services
 from app.showers import forms
+from app_queue.models import QueueEntry
 import pytz
 
 @laundry_bp.route('/laundry')
@@ -137,7 +138,7 @@ def book_washer(washer_id):
         # Place info into db
         try:
             print("Calling adding to queue", phone_number, event, washer_id, booking_time_utc, duration)
-            add_to_queue(phone_number, event, washer_id, booking_time_utc, duration, time_slot, time_slot_display)
+            add_to_queue(phone_number, event, washer_id, booking_time_utc, duration, time_slot, time_slot_display, )
             print("Added to queue successfully!")
             services.send_confirmation_message(phone_number, event, booking_time_utc, duration)
             flash(f'You have successfully registered to {event} at {time_slot_display}!', 'success')
@@ -191,7 +192,8 @@ def book_dryer(dryer_id):
             print("Calling adding to queue", phone_number, event, dryer_id, booking_time_utc, duration)
             add_to_queue(phone_number, event, dryer_id, booking_time_utc, duration, time_slot, time_slot_display)
             print("Added to queue successfully!")
-            services.send_confirmation_message(phone_number, event, booking_time_utc, duration)
+            saved_entry = QueueEntry.query.filter_by(phone_number=phone_number, event_type=event).order_by(QueueEntry.id.desc()).first()
+            services.send_confirmation_message(phone_number, event, saved_entry.display_time, duration)
             flash(f'You have successfully registered to {event} at {time_slot_display}!', 'success')
             return redirect(url_for('home.dashboard'))
         except Exception as e:
