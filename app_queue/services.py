@@ -10,7 +10,7 @@ from flask_login import current_user
 
 
 def add_to_queue(phone_number: str, event: str, shower_id: int,
-                 registration_time: str, duration: int, clicked_time):
+                 registration_time: str, duration: int, clicked_time, display_time):
     '''
     Adds user to queue db with position and id
     '''
