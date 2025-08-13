@@ -10,7 +10,7 @@ from flask_login import current_user
 
 
 def add_to_queue(phone_number: str, event: str, shower_id: int,
-                 registration_time: str, duration: int, clicked_time):
+                 registration_time: str, duration: int, clicked_time, display_time):
     '''
     Adds user to queue db with position and id
     '''
@@ -40,6 +40,7 @@ def add_to_queue(phone_number: str, event: str, shower_id: int,
         duration=duration,
         position=new_position,
         clicked_time=clicked_time,
+        display_time=display_time,
         shower_id=shower_id,
         user_id=current_user.id
     )
@@ -95,7 +96,7 @@ def cancel_queue(queue_id, user_id):
     if booking:
         phone_number = booking.phone_number
         event = booking.event_type
-        time = booking.registration_time
+        time = booking.display_time
 
         db.session.delete(booking)
         db.session.commit()

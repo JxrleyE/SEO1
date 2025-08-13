@@ -741,6 +741,12 @@ input[type="submit"] {
     z-index: 1;
 }
 
+/* To the schedule grid */
+.schedule-table-wrapper table {
+    margin: 0 auto;
+    width: auto;
+}
+
 /* Styling for "Book" and "(Booked)" buttons */
 .schedule-button {
     padding: 10px 15px;
