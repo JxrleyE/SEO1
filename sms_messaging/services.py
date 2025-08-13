@@ -88,7 +88,7 @@ def send_reminder_message(app):
                 if 0 < minutes <= REMINDER_30_MINUTES:
                     try:
                         message = client.messages.create(
-                            body=f"Reminder: You have registered to {entry.event_type} at {entry.clicked_time}, {int(minutes)} minutes from now. Your current position is {entry.position}.",
+                            body=f"Reminder: You have registered to {entry.event_type} at {entry.display_time}, {int(minutes)} minutes from now. Your current position is {entry.position}.",
                             from_=TWILIO_PHONE_NUMBER,
                             to=entry.phone_number,
                         )

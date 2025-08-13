@@ -96,7 +96,7 @@ def cancel_queue(queue_id, user_id):
     if booking:
         phone_number = booking.phone_number
         event = booking.event_type
-        time = booking.clicked_time
+        time = booking.display_time
 
         db.session.delete(booking)
         db.session.commit()
