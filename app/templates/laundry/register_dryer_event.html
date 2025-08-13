@@ -8,29 +8,24 @@
 </head>
 <body>
     <div class="login-container">
-        <h1> Register Page</h1>
+        <h1> Book Your Dryer Slot</h1>
 
-        {% if form.errors %}
-            <div style="color: red; margin: 10px 0; padding: 10px; border: 1px solid red; background-color: #ffe6e6;">
-                {% for field, errors in form.errors.items() %}
-                    {% for error in errors %}
-                        <div>{{ error }}</div>
-                    {% endfor %}
-                {% endfor %}
+        {% if error %} 
+            <div class="error-message">
+                {{ error }}
             </div>
-        {% endif %}
-
-        {% if error %}  <!-- Add this section -->
-        <div style="color: red; margin: 10px 0; padding: 10px; border: 1px solid red; background-color: #ffe6e6;">
-            {{ error }}
-        </div>
         {% endif %}
 
         <form method ="POST" action="{{ url_for('laundry.book_dryer', dryer_id=dryer_id) }}">
             {{ form.hidden_tag() }}
-            {{ form.phone_number }}
-            {{ form.time_zone }}
-            {{ form.submit }}
+
+            <label for="phone_number">Phone Number:</label>
+            {{ form.phone_number(class="form-input") }}
+
+            <label for="time_zone">Time Zone:</label>
+            {{ form.time_zone(class="form-input") }} 
+            
+            {{ form.submit(class="form-submit-button") }}
         </form>
 
         <div class="dashboard-links">
